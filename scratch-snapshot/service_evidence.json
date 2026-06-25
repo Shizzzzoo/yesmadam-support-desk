@@ -1,0 +1,35 @@
+[
+  {
+    "id": "f6bd5dcb-31b0-4dc5-b437-ae40f6223149",
+    "created_at": "2026-06-24T14:29:32.465980Z",
+    "updated_at": "2026-06-24T14:29:32.465980Z",
+    "booking_id": "a374cbcd-7652-4c03-8082-fcde0c31ec71",
+    "kind": "before_photo",
+    "occurred_at": "2026-06-24T12:35:00Z",
+    "geo": null,
+    "file_path": null,
+    "note": "Setup photo at start of session"
+  },
+  {
+    "id": "c89f277c-b253-469d-8afe-1b385320b53b",
+    "created_at": "2026-06-24T14:29:29.521203Z",
+    "updated_at": "2026-06-24T14:29:29.521203Z",
+    "booking_id": "a374cbcd-7652-4c03-8082-fcde0c31ec71",
+    "kind": "start_otp",
+    "occurred_at": "2026-06-24T12:28:00Z",
+    "geo": null,
+    "file_path": null,
+    "note": "Client shared start OTP 4821"
+  },
+  {
+    "id": "229f1836-8a9a-483c-ab66-c056a91187da",
+    "created_at": "2026-06-24T14:29:28.925795Z",
+    "updated_at": "2026-06-24T14:29:28.925795Z",
+    "booking_id": "a374cbcd-7652-4c03-8082-fcde0c31ec71",
+    "kind": "arrival_checkin",
+    "occurred_at": "2026-06-24T12:25:00Z",
+    "geo": "Indiranagar",
+    "file_path": null,
+    "note": "Provider reached client location"
+  }
+]

@@ -1,0 +1,12 @@
+{
+  "name": "verify_service",
+  "description": "Deterministic proof-of-service check for a booking. Reads the booking's arrival check-in, start/completion OTP flags, work status, and the service_evidence log, and returns whether service was provably rendered — so a refund is decided on EVIDENCE, not on the customer's claim. Used to catch a 'sneaky cancel' after the work was done.",
+  "type": "API",
+  "code": { "$file": "code.py" },
+  "permissions": { "grants": [
+    { "resource_type": "datastore_table", "resource_name": "bookings",
+      "permission_ids": ["datastore.table.read", "datastore.record.read"] },
+    { "resource_type": "datastore_table", "resource_name": "service_evidence",
+      "permission_ids": ["datastore.table.read", "datastore.record.read"] }
+  ] }
+}

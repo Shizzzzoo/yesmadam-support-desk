@@ -1,0 +1,12 @@
+{
+  "name": "apply_triage",
+  "description": "Persist the triage agent's classification onto a ticket (category, urgency, confidence, linked booking, draft reply, full decision JSON) and log a 'classified' event. Runs right after the AGENT node so the operator app can render the decision.",
+  "type": "API",
+  "code": { "$file": "code.py" },
+  "permissions": { "grants": [
+    { "resource_type": "datastore_table", "resource_name": "tickets",
+      "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] },
+    { "resource_type": "datastore_table", "resource_name": "ticket_events",
+      "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] }
+  ] }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "sweep_provider_sla",
+  "description": "Expires provider_responses rows past the 5-minute SLA: awaiting -> no_response (auto-refund), and reschedule offers with no customer reply -> customer_declined. The UPDATE it writes fires provider_reply, which resolves the customer.",
+  "type": "API",
+  "code": { "$file": "code.py" },
+  "permissions": { "grants": [
+    { "resource_type": "datastore_table", "resource_name": "provider_responses", "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] }
+  ] }
+}

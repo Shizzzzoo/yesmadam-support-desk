@@ -1,0 +1,15 @@
+# Third-party clone — not ours, 168MB
+lemma-platform/
+
+# Dependencies / build output
+**/node_modules/
+yesmadam-ops/dist/
+.vercel/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS / editor
+.DS_Store

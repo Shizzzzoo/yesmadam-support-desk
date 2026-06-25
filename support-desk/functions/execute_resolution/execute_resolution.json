@@ -1,0 +1,16 @@
+{
+  "name": "execute_resolution",
+  "description": "The reliable verb that DOES THE WORK: takes the chosen action against the booking (reschedule / refund / assign replacement / none), then resolves the ticket and writes the audit events — one coordinated multi-table write. Called by the workflow on both the auto path (actor=agent) and the human-approved path (actor=human).",
+  "type": "API",
+  "code": { "$file": "code.py" },
+  "permissions": { "grants": [
+    { "resource_type": "datastore_table", "resource_name": "tickets",
+      "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] },
+    { "resource_type": "datastore_table", "resource_name": "bookings",
+      "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] },
+    { "resource_type": "datastore_table", "resource_name": "professionals",
+      "permission_ids": ["datastore.table.read", "datastore.record.read"] },
+    { "resource_type": "datastore_table", "resource_name": "ticket_events",
+      "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] }
+  ] }
+}

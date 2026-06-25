@@ -1,0 +1,13 @@
+{
+  "name": "alert_provider",
+  "description": "Opens a provider-coordination row, sets the booking en-route lock to 'alerted', parks the ticket as awaiting_provider with a customer holding reply, and triggers the provider alert. Idempotent across multiple waiting tickets for one booking.",
+  "type": "API",
+  "code": { "$file": "code.py" },
+  "permissions": { "grants": [
+    { "resource_type": "datastore_table", "resource_name": "provider_responses", "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] },
+    { "resource_type": "datastore_table", "resource_name": "bookings", "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] },
+    { "resource_type": "datastore_table", "resource_name": "tickets", "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] },
+    { "resource_type": "datastore_table", "resource_name": "ticket_events", "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] },
+    { "resource_type": "function", "resource_name": "notify_provider", "permission_ids": ["function.execute"] }
+  ] }
+}

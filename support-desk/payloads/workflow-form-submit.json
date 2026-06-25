@@ -1,0 +1,7 @@
+{
+  "node_id": "escalate_form",
+  "inputs": {
+    "approved": true,
+    "final_reply": "I've cancelled your massage and issued the full refund. Apologies for the trouble."
+  }
+}

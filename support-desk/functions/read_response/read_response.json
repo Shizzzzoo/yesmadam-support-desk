@@ -1,0 +1,10 @@
+{
+  "name": "read_response",
+  "description": "Fetches a provider_responses row plus the linked booking's provider_state/status, so the provider_reply workflow can route without relying on event payload deltas.",
+  "type": "API",
+  "code": { "$file": "code.py" },
+  "permissions": { "grants": [
+    { "resource_type": "datastore_table", "resource_name": "provider_responses", "permission_ids": ["datastore.table.read", "datastore.record.read"] },
+    { "resource_type": "datastore_table", "resource_name": "bookings", "permission_ids": ["datastore.table.read", "datastore.record.read"] }
+  ] }
+}

@@ -1,0 +1,10 @@
+{
+  "ticket_id": "REPLACE_WITH_A_TICKET_ID",
+  "category": "reschedule",
+  "urgency": "normal",
+  "confidence": 0.94,
+  "booking_id": "REPLACE_WITH_THE_LINKED_BOOKING_ID",
+  "proposed_action": "reschedule",
+  "draft_reply": "Done! I've moved your haircut to 6:00 PM on the 28th.",
+  "reasoning": "Reschedule >3h before start → free window per policy."
+}

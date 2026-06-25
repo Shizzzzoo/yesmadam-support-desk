@@ -1,0 +1,105 @@
+[
+  {
+    "id": "7aa1e1c9-4a16-40a4-9f2c-f79e36057db2",
+    "created_at": "2026-06-24T13:53:58.786245Z",
+    "updated_at": "2026-06-24T13:53:58.786245Z",
+    "name": "Sneha Kulkarni",
+    "services": [
+      "facial",
+      "manicure"
+    ],
+    "available_slots": [
+      "2026-06-27T21:00:00+05:30"
+    ],
+    "area": "BTM Layout",
+    "active": true
+  },
+  {
+    "id": "4a7f19b9-f26b-4922-861a-35614ffcf428",
+    "created_at": "2026-06-24T13:53:57.466182Z",
+    "updated_at": "2026-06-24T13:53:57.466182Z",
+    "name": "Karan Malhotra",
+    "services": [
+      "haircut",
+      "massage"
+    ],
+    "available_slots": [
+      "2026-06-27T19:00:00+05:30"
+    ],
+    "area": "Koramangala",
+    "active": true
+  },
+  {
+    "id": "286ee49e-9bab-4050-97ce-24b83f4717cb",
+    "created_at": "2026-06-24T13:53:56.173349Z",
+    "updated_at": "2026-06-24T13:53:56.173349Z",
+    "name": "Meera Pillai",
+    "services": [
+      "waxing",
+      "facial"
+    ],
+    "available_slots": [
+      "2026-06-27T21:30:00+05:30"
+    ],
+    "area": "BTM Layout",
+    "active": true
+  },
+  {
+    "id": "4e61d1f6-1985-45b1-b9e3-705090c31a6c",
+    "created_at": "2026-06-24T13:53:54.952721Z",
+    "updated_at": "2026-06-24T13:53:54.952721Z",
+    "name": "Neha Gupta",
+    "services": [
+      "manicure",
+      "waxing"
+    ],
+    "available_slots": [
+      "2026-06-29T11:00:00+05:30"
+    ],
+    "area": "Whitefield",
+    "active": true
+  },
+  {
+    "id": "fc9d682b-9184-435c-9758-14bc7a00f539",
+    "created_at": "2026-06-24T13:53:53.865788Z",
+    "updated_at": "2026-06-24T13:53:53.865788Z",
+    "name": "Anjali Rao",
+    "services": [
+      "massage"
+    ],
+    "available_slots": [
+      "2026-06-27T20:00:00+05:30"
+    ],
+    "area": "HSR Layout",
+    "active": true
+  },
+  {
+    "id": "ea96293d-a613-4712-a683-2e63c8482078",
+    "created_at": "2026-06-24T13:53:52.873053Z",
+    "updated_at": "2026-06-24T13:53:52.873053Z",
+    "name": "Ritu Verma",
+    "services": [
+      "facial"
+    ],
+    "available_slots": [
+      "2026-06-27T17:00:00+05:30"
+    ],
+    "area": "Indiranagar",
+    "active": true
+  },
+  {
+    "id": "d7662377-7c4b-4016-ac4f-6c353881123c",
+    "created_at": "2026-06-24T13:53:51.352334Z",
+    "updated_at": "2026-06-24T13:53:51.352334Z",
+    "name": "Pooja Sharma",
+    "services": [
+      "haircut"
+    ],
+    "available_slots": [
+      "2026-06-27T18:00:00+05:30",
+      "2026-06-28T16:00:00+05:30"
+    ],
+    "area": "Koramangala",
+    "active": true
+  }
+]

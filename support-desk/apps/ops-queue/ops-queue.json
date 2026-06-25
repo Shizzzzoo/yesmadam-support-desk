@@ -1,0 +1,5 @@
+{
+  "name": "ops-queue",
+  "description": "The support desk operator screen: live ticket queue, a detail pane showing the agent's decision and the linked booking row (which visibly changes when the desk acts), an approval action for escalated tickets, and an auto-resolved vs escalated metric banner.",
+  "public_slug": "support-desk-ops"
+}

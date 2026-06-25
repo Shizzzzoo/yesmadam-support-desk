@@ -1,0 +1,17 @@
+// professionals — light availability data so the agent can pick a replacement for a
+// no-show. Kept simple: services + free slots + service area.
+{
+  "name": "professionals",
+  "primary_key_column": "id",
+  "enable_rls": false,
+  "columns": [
+    { "name": "name", "type": "TEXT", "required": true, "max_length": 160 },
+    { "name": "services", "type": "JSON", "description": "List of services this pro offers" },
+    { "name": "available_slots", "type": "JSON", "description": "List of ISO datetimes currently free" },
+    { "name": "area", "type": "TEXT", "max_length": 160, "description": "Service area / locality" }
+    ,{ "name": "contact_email", "type": "TEXT", "max_length": 200,
+      "description": "Where the 'client is waiting' alert is sent (Gmail seam; SMS later)" },
+    { "name": "active", "type": "BOOLEAN", "default": true }
+  ],
+  "config": {}
+}

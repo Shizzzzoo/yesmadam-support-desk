@@ -1,0 +1,67 @@
+{
+  "name": "provider_reply",
+  "description": "Fires when a provider_responses row's status changes. Reads the full row + booking state (read_response), guards against late replies on already-resolved bookings, then routes the professional's choice (late/on_site/reschedule/cant_make_it), the customer's reschedule YES/NO, or an SLA timeout into the right booking action. Never writes provider_responses, so it cannot re-trigger itself.",
+  "start": { "type": "DATASTORE_EVENT", "config": { "table_name": "provider_responses", "operations": ["UPDATE"] } },
+  "nodes": [
+    {
+      "id": "read_response",
+      "type": "FUNCTION",
+      "label": "Load coordination row + booking state",
+      "config": {
+        "function_name": "read_response",
+        "input_mapping": {
+          "response_id": { "type": "expression", "value": "start.metadata.record_id" }
+        }
+      }
+    },
+    {
+      "id": "guard",
+      "type": "DECISION",
+      "label": "Already resolved? (late reply)",
+      "config": {
+        "rules": [
+          { "condition": "read_response.provider_state == 'stood_down' || read_response.booking_status == 'cancelled' || read_response.booking_status == 'completed'", "next_node_id": "provider_stand_notice" }
+        ]
+      }
+    },
+    {
+      "id": "route",
+      "type": "DECISION",
+      "label": "Route the provider/customer decision",
+      "config": {
+        "rules": [
+          { "condition": "read_response.status == 'late' || read_response.status == 'on_site'", "next_node_id": "commit_en_route" },
+          { "condition": "read_response.status == 'reschedule'", "next_node_id": "offer_reschedule" },
+          { "condition": "read_response.status == 'customer_accepted'", "next_node_id": "apply_reschedule" },
+          { "condition": "read_response.status == 'cant_make_it' || read_response.status == 'no_response' || read_response.status == 'customer_declined'", "next_node_id": "stand_down" }
+        ]
+      }
+    },
+    { "id": "commit_en_route", "type": "FUNCTION", "label": "Pro coming / on-site",
+      "config": { "function_name": "commit_en_route", "input_mapping": { "response_id": { "type": "expression", "value": "start.metadata.record_id" } } } },
+    { "id": "offer_reschedule", "type": "FUNCTION", "label": "Offer new time to customer",
+      "config": { "function_name": "offer_reschedule", "input_mapping": { "response_id": { "type": "expression", "value": "start.metadata.record_id" } } } },
+    { "id": "apply_reschedule", "type": "FUNCTION", "label": "Customer accepted -> reschedule",
+      "config": { "function_name": "apply_reschedule", "input_mapping": { "response_id": { "type": "expression", "value": "start.metadata.record_id" } } } },
+    { "id": "stand_down", "type": "FUNCTION", "label": "Stand down -> replacement/refund",
+      "config": { "function_name": "stand_down", "input_mapping": { "response_id": { "type": "expression", "value": "start.metadata.record_id" } } } },
+    { "id": "provider_stand_notice", "type": "FUNCTION", "label": "Late reply (no-op)",
+      "config": { "function_name": "provider_stand_notice", "input_mapping": { "response_id": { "type": "expression", "value": "start.metadata.record_id" } } } },
+    { "id": "end", "type": "END", "label": "Done" }
+  ],
+  "edges": [
+    { "id": "p1", "source": "read_response", "target": "guard" },
+    { "id": "p2", "source": "guard", "target": "route", "label": "not yet resolved (default)" },
+    { "id": "p3", "source": "guard", "target": "provider_stand_notice", "label": "already stood down" },
+    { "id": "p4", "source": "route", "target": "commit_en_route", "label": "late/on_site" },
+    { "id": "p5", "source": "route", "target": "offer_reschedule", "label": "reschedule" },
+    { "id": "p6", "source": "route", "target": "apply_reschedule", "label": "customer accepted" },
+    { "id": "p7", "source": "route", "target": "stand_down", "label": "cant/no_response/declined" },
+    { "id": "p8", "source": "route", "target": "end", "label": "no actionable status change (default)" },
+    { "id": "p9", "source": "commit_en_route", "target": "end" },
+    { "id": "p10", "source": "offer_reschedule", "target": "end" },
+    { "id": "p11", "source": "apply_reschedule", "target": "end" },
+    { "id": "p12", "source": "stand_down", "target": "end" },
+    { "id": "p13", "source": "provider_stand_notice", "target": "end" }
+  ]
+}

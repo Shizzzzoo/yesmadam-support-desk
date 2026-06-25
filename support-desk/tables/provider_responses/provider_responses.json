@@ -1,0 +1,23 @@
+// provider_responses — one row per provider-coordination event. The professional's
+// reply (or the SLA sweeper's timeout) updates `status`, which fires the provider_reply
+// workflow. Shared (enable_rls:false) — the ops team and workflows all read/write it.
+{
+  "name": "provider_responses",
+  "primary_key_column": "id",
+  "enable_rls": false,
+  "columns": [
+    { "name": "ticket_id", "type": "UUID", "required": true, "foreign_key": { "references": "tickets.id" },
+      "description": "The customer-waiting ticket that triggered the alert" },
+    { "name": "booking_id", "type": "UUID", "foreign_key": { "references": "bookings.id" } },
+    { "name": "professional_name", "type": "TEXT", "max_length": 160 },
+    { "name": "status", "type": "ENUM", "required": true, "default": "awaiting",
+      "options": ["awaiting", "late", "reschedule", "on_site", "cant_make_it", "no_response", "customer_accepted", "customer_declined"],
+      "description": "awaiting=pinged; late/reschedule/on_site/cant_make_it=pro chose; no_response=SLA expiry; customer_accepted/declined=reschedule offer leg" },
+    { "name": "eta_minutes", "type": "INTEGER", "description": "Minutes the pro asked the client to wait (status=late)" },
+    { "name": "proposed_new_time", "type": "DATETIME", "description": "Pro's proposed slot (status=reschedule)" },
+    { "name": "alerted_at", "type": "DATETIME", "description": "When the pro was alerted — the SLA clock" },
+    { "name": "responded_at", "type": "DATETIME", "description": "When the pro/customer last acted" },
+    { "name": "note", "type": "TEXT", "max_length": 1900 }
+  ],
+  "config": {}
+}

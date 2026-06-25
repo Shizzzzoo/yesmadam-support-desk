@@ -1,0 +1,362 @@
+[
+  {
+    "id": "332e4fe1-0e55-43c0-b52d-24733f2d27f4",
+    "created_at": "2026-06-24T16:44:02.464916Z",
+    "updated_at": "2026-06-24T16:44:02.464916Z",
+    "ticket_id": "2972c262-1d61-4210-ae51-fe399557a275",
+    "kind": "resolved",
+    "note": "Email notification failed: [400] ACCOUNT_RESOLUTION_ERROR: No account connected for 'gmail'. Connect your account first. (request_id=52d2445fa88e52df1bf394b4d24a2f83)",
+    "actor": "agent"
+  },
+  {
+    "id": "debf4d53-c9b1-498b-a728-b87933df9d5f",
+    "created_at": "2026-06-24T16:43:58.605615Z",
+    "updated_at": "2026-06-24T16:43:58.605615Z",
+    "ticket_id": "2972c262-1d61-4210-ae51-fe399557a275",
+    "kind": "resolved",
+    "note": "Ticket auto_resolved. booking #7: Karan Malhotra assigned to replace no-show Pooja Sharma",
+    "actor": "agent"
+  },
+  {
+    "id": "d863f6fa-bff7-45e4-be12-070a4d06b869",
+    "created_at": "2026-06-24T16:43:58.605615Z",
+    "updated_at": "2026-06-24T16:43:58.605615Z",
+    "ticket_id": "2972c262-1d61-4210-ae51-fe399557a275",
+    "kind": "action_taken",
+    "note": "booking #7: Karan Malhotra assigned to replace no-show Pooja Sharma",
+    "actor": "agent"
+  },
+  {
+    "id": "80c08b0e-91b0-4e10-bef1-077c01398ad3",
+    "created_at": "2026-06-24T16:43:54.745588Z",
+    "updated_at": "2026-06-24T16:43:54.745588Z",
+    "ticket_id": "2972c262-1d61-4210-ae51-fe399557a275",
+    "kind": "classified",
+    "note": "no_show (confidence 0.9) \u2192 proposed assign_replacement. The message \u2014 \"My stylist never showed up and I have been waiting 30 minutes! Nobody came for my haircut\" \u2014 matches the rubric's no_show signals verbatim (pro never turned up, 30-minute wait, no one arrived). Per the support policy's no-show rules, a pro who fails to arrive entitles the customer to a replacement OR a full refund (their choice); replacement is preferred when an active pro exists in the same area \u2014 Karan Malhotra is active for haircut in Koramangala, so this booking qualifies. No-show urgency is high.",
+    "actor": "agent"
+  },
+  {
+    "id": "fdf81e06-b274-4b26-a7d1-c535295e374d",
+    "created_at": "2026-06-24T16:37:50.794831Z",
+    "updated_at": "2026-06-24T16:37:50.794831Z",
+    "ticket_id": "4851a453-c974-4833-8b5c-c1bf88599a44",
+    "kind": "resolved",
+    "note": "Email notification failed: [400] ACCOUNT_RESOLUTION_ERROR: No account connected for 'gmail'. Connect your account first. (request_id=4acb65f3e710903839c29d3fe6c3a0b9)",
+    "actor": "agent"
+  },
+  {
+    "id": "24fc1da2-bfa5-4128-b168-7be9405df1bf",
+    "created_at": "2026-06-24T16:37:48.310583Z",
+    "updated_at": "2026-06-24T16:37:48.310583Z",
+    "ticket_id": "4851a453-c974-4833-8b5c-c1bf88599a44",
+    "kind": "action_taken",
+    "note": "booking #3 rescheduled to 2026-06-28T18:00:00+05:30",
+    "actor": "agent"
+  },
+  {
+    "id": "63d7e69d-d5fc-41f8-8852-333b14721f8c",
+    "created_at": "2026-06-24T16:37:48.310583Z",
+    "updated_at": "2026-06-24T16:37:48.310583Z",
+    "ticket_id": "4851a453-c974-4833-8b5c-c1bf88599a44",
+    "kind": "resolved",
+    "note": "Ticket auto_resolved. booking #3 rescheduled to 2026-06-28T18:00:00+05:30",
+    "actor": "agent"
+  },
+  {
+    "id": "97e6b910-4f1a-43c8-9faf-a8450c73b7e2",
+    "created_at": "2026-06-24T16:37:43.354380Z",
+    "updated_at": "2026-06-24T16:37:43.354380Z",
+    "ticket_id": "4851a453-c974-4833-8b5c-c1bf88599a44",
+    "kind": "classified",
+    "note": "reschedule (confidence 0.95) \u2192 proposed reschedule. Customer explicitly asks to MOVE the haircut on the 28th to 6 PM instead of the earlier 4 PM slot, which is a textbook reschedule signal. The request lands ~4 days before the scheduled start (2026-06-28 12:30 UTC = 6 PM IST), well inside the >3-hour free-reschedule window, so no fee and no human approval needed.",
+    "actor": "agent"
+  },
+  {
+    "id": "0b025544-eccb-4635-a99d-3a448afbebb2",
+    "created_at": "2026-06-24T16:14:40.130407Z",
+    "updated_at": "2026-06-24T16:14:40.130407Z",
+    "ticket_id": "d3cb3c37-9c1f-4344-b28a-5ada7c914db1",
+    "kind": "resolved",
+    "note": "Email notification failed: [400] ACCOUNT_RESOLUTION_ERROR: No account connected for 'gmail'. Connect your account first. (request_id=3137dd9649914672e9b3c8ed979605d6)",
+    "actor": "agent"
+  },
+  {
+    "id": "05f3d169-a73e-4962-90f9-a21b43ecc373",
+    "created_at": "2026-06-24T16:14:35.422511Z",
+    "updated_at": "2026-06-24T16:14:35.422511Z",
+    "ticket_id": "d3cb3c37-9c1f-4344-b28a-5ada7c914db1",
+    "kind": "resolved",
+    "note": "Ticket auto_resolved. no booking change",
+    "actor": "agent"
+  },
+  {
+    "id": "b5c2bb65-133d-4ea9-b903-608cec05911a",
+    "created_at": "2026-06-24T16:14:24.491089Z",
+    "updated_at": "2026-06-24T16:14:24.491089Z",
+    "ticket_id": "d3cb3c37-9c1f-4344-b28a-5ada7c914db1",
+    "kind": "classified",
+    "note": "where_is_pro (confidence 0.95) \u2192 proposed none. Customer phrased the request with explicit timing-only signals (\"just confirming the timing\", \"what time is it again?\") which match the where_is_pro rubric exactly; the slot is still 6 days away, so per \"Where is my professional\" policy this is an informational reply with no booking change, and urgency falls under general-question/low.",
+    "actor": "agent"
+  },
+  {
+    "id": "43ad1962-fb1f-4139-9f3b-542f7a814d76",
+    "created_at": "2026-06-24T14:32:30.864679Z",
+    "updated_at": "2026-06-24T14:32:30.864679Z",
+    "ticket_id": "71e29962-35df-4571-a934-bdffc810945f",
+    "kind": "classified",
+    "note": "cancel_refund (confidence 0.75) \u2192 proposed refund. Customer explicitly asks to cancel the massage and refund \u20b9999. The booking is already in progress (start OTP verified, ~2h past scheduled start at 12:30 UTC, ticket at 14:31 UTC). Per the cancellation policy, no refund applies inside 1 hour of start \u2014 and a started service is even further past that window \u2014 so refund_amount is 0.",
+    "actor": "agent"
+  },
+  {
+    "id": "ea68533b-f798-4db3-8080-313308d1364b",
+    "created_at": "2026-06-24T14:00:49.933608Z",
+    "updated_at": "2026-06-24T14:00:49.933608Z",
+    "ticket_id": "e9642278-4224-4c2f-bd32-4573a5b49bef",
+    "kind": "resolved",
+    "note": "Ticket auto_resolved. no booking change",
+    "actor": "agent"
+  },
+  {
+    "id": "8678d2c8-ea03-4708-a605-b46395c33046",
+    "created_at": "2026-06-24T14:00:44.996307Z",
+    "updated_at": "2026-06-24T14:00:44.996307Z",
+    "ticket_id": "e9642278-4224-4c2f-bd32-4573a5b49bef",
+    "kind": "classified",
+    "note": "where_is_pro (confidence 0.95) \u2192 proposed none. Customer explicitly asks \"where is my massage therapist?\" \u2014 a textbook where_is_pro inquiry. Booking is scheduled for 28 June (4 days out, well before the 15-minute past-start no_show trigger), so per the 'Where is my professional' rule this is an informational reply naming the assigned professional; no booking change needed.",
+    "actor": "agent"
+  },
+  {
+    "id": "ed3cc139-7836-4ec4-91a8-51b5fde5fc9a",
+    "created_at": "2026-06-24T13:57:20.984677Z",
+    "updated_at": "2026-06-24T13:57:20.984677Z",
+    "ticket_id": "a040841e-35be-4007-8db9-1e96f4aa4294",
+    "kind": "classified",
+    "note": "cancel_refund (confidence 0.95) \u2192 proposed refund. Customer (Aditya Bose) explicitly requested cancellation and a full refund for his massage on the 28th. The matching booking (#10, Anjali Rao, \u20b92,499) is scheduled for 2026-06-28 12:00 UTC, ~94 hours from the ticket \u2014 well outside the 6-hour cutoff, so the policy grants a full \u20b92,499 refund. Because the refundable amount exceeds the \u20b91,500 auto-approval cap, the ticket must be escalated to a human for final approval (per the hard gates in /knowledge/support-policy.md).",
+    "actor": "agent"
+  },
+  {
+    "id": "12e469ed-f4c9-460e-b56d-f938ff248d4f",
+    "created_at": "2026-06-24T13:56:39.267115Z",
+    "updated_at": "2026-06-24T13:56:39.267115Z",
+    "ticket_id": "497d6e32-56e7-49a7-ae2d-a1b270fe0a21",
+    "kind": "action_taken",
+    "note": "booking #8 rescheduled to 2026-06-27T11:30:00+00:00",
+    "actor": "agent"
+  },
+  {
+    "id": "06afb45d-991b-47a6-a799-f10578e05420",
+    "created_at": "2026-06-24T13:56:39.267115Z",
+    "updated_at": "2026-06-24T13:56:39.267115Z",
+    "ticket_id": "497d6e32-56e7-49a7-ae2d-a1b270fe0a21",
+    "kind": "resolved",
+    "note": "Ticket auto_resolved. booking #8 rescheduled to 2026-06-27T11:30:00+00:00",
+    "actor": "agent"
+  },
+  {
+    "id": "12e729c9-e73d-4fe7-8a3a-be48eb4f2ccc",
+    "created_at": "2026-06-24T13:56:35.974438Z",
+    "updated_at": "2026-06-24T13:56:35.974438Z",
+    "ticket_id": "497d6e32-56e7-49a7-ae2d-a1b270fe0a21",
+    "kind": "classified",
+    "note": "reschedule (confidence 0.96) \u2192 proposed reschedule. Customer asks to move the facial on June 27. Matching booking (scheduled 2026-06-27 09:30 UTC = 3:00 PM IST) is more than 3 hours out, so per the reschedule rules it qualifies for a free in-window reschedule with no human approval needed.",
+    "actor": "agent"
+  },
+  {
+    "id": "7e69bd9b-de0c-488f-95fe-0d6aa2509e1c",
+    "created_at": "2026-06-24T13:55:52.144515Z",
+    "updated_at": "2026-06-24T13:55:52.144515Z",
+    "ticket_id": "5a0dfaa9-58f9-4122-8e53-a339af334868",
+    "kind": "resolved",
+    "note": "Ticket auto_resolved. booking #12 rescheduled to 2026-06-29T12:00:00+05:30",
+    "actor": "agent"
+  },
+  {
+    "id": "a18b0baa-03b6-4de3-865d-9fa17fcdbddd",
+    "created_at": "2026-06-24T13:55:52.144515Z",
+    "updated_at": "2026-06-24T13:55:52.144515Z",
+    "ticket_id": "5a0dfaa9-58f9-4122-8e53-a339af334868",
+    "kind": "action_taken",
+    "note": "booking #12 rescheduled to 2026-06-29T12:00:00+05:30",
+    "actor": "agent"
+  },
+  {
+    "id": "eb30a9d3-af3e-4df5-a022-ec239fc8354f",
+    "created_at": "2026-06-24T13:55:49.301069Z",
+    "updated_at": "2026-06-24T13:55:49.301069Z",
+    "ticket_id": "5a0dfaa9-58f9-4122-8e53-a339af334868",
+    "kind": "classified",
+    "note": "reschedule (confidence 0.95) \u2192 proposed reschedule. Customer Reyansh Gupta asked to move the haircut with Karan Malhotra from 2026-06-29 10:00 IST to 2026-06-29 12:00 IST. Per the support policy, reschedule requests made more than 3 hours before the scheduled start are processed free of charge; this request lands ~5 days ahead, so the agent can act on it.",
+    "actor": "agent"
+  },
+  {
+    "id": "cb05afc5-b0cf-4432-9550-7e2cd13cf6e6",
+    "created_at": "2026-06-24T13:55:46.678795Z",
+    "updated_at": "2026-06-24T13:55:46.678795Z",
+    "ticket_id": "86ac8f8b-1d65-4d35-9956-e3d70d2598d1",
+    "kind": "classified",
+    "note": "other (confidence 0.95) \u2192 proposed none. This is a request to create a new booking (\"facial for tomorrow afternoon\"), not a support action on an existing one. Per the support policy, anything that is not reschedule, cancel_refund, no_show, or where_is_pro falls to `other` and is always escalated to a human (intended behaviour). No booking exists for Priya Menon, so there is nothing for the support desk to act on.",
+    "actor": "agent"
+  },
+  {
+    "id": "f0cd283f-c66c-4917-aaae-cc72a1480c1b",
+    "created_at": "2026-06-24T13:55:44.265424Z",
+    "updated_at": "2026-06-24T13:55:44.265424Z",
+    "ticket_id": "fc9a164e-49cd-4c96-9178-3da73698afcb",
+    "kind": "classified",
+    "note": "other (confidence 0.92) \u2192 proposed none. Per the support policy, anything that is not clearly one of the four core categories (reschedule, cancel_refund, no_show, where_is_pro) is classified as `other` and escalated to a human. This ticket is a single, clear sales/pricing inquiry about bridal makeup packages \u2014 not mixed or unclear \u2014 so `other` is the right bucket rather than `ambiguous`. Urgency `low` per the policy's \"general questions\" guidance.",
+    "actor": "agent"
+  },
+  {
+    "id": "f04d21ea-7dad-4f56-97c5-654fe39c4e19",
+    "created_at": "2026-06-24T13:55:42.879252Z",
+    "updated_at": "2026-06-24T13:55:42.879252Z",
+    "ticket_id": "15bdc274-24a0-40c0-bfe0-dc87c9f0a146",
+    "kind": "resolved",
+    "note": "Ticket auto_resolved. booking #11: Sneha Kulkarni assigned as replacement",
+    "actor": "agent"
+  },
+  {
+    "id": "47e78531-edab-473b-b035-b28dbd806771",
+    "created_at": "2026-06-24T13:55:42.879252Z",
+    "updated_at": "2026-06-24T13:55:42.879252Z",
+    "ticket_id": "15bdc274-24a0-40c0-bfe0-dc87c9f0a146",
+    "kind": "action_taken",
+    "note": "booking #11: Sneha Kulkarni assigned as replacement",
+    "actor": "agent"
+  },
+  {
+    "id": "538a897c-87b8-47e4-8db8-1ce458036a8b",
+    "created_at": "2026-06-24T13:55:40.419342Z",
+    "updated_at": "2026-06-24T13:55:40.419342Z",
+    "ticket_id": "15bdc274-24a0-40c0-bfe0-dc87c9f0a146",
+    "kind": "classified",
+    "note": "no_show (confidence 0.85) \u2192 proposed assign_replacement. Customer message (\"Nobody arrived for my facial appointment and it has been over 25 minutes\") matches the no_show policy exactly: professional did not arrive within 15 minutes of the slot, customer is stranded \u2192 high-urgency no_show. One booking matches on customer_name and service (facial with Ritu Verma, \u20b91,299). Note: the booking's scheduled_at shows 2026-06-27 (~3 days out from the ticket at 2026-06-24), which is a scheduling-data anomaly given the customer's \"stranded now\" framing \u2014 flagging for human verification. Per policy, a no_show entitles the customer to a replacement OR full refund; proposing replacement since customer is currently waiting.",
+    "actor": "agent"
+  },
+  {
+    "id": "137bd5d9-b1e1-49de-8234-ddc6910a34fd",
+    "created_at": "2026-06-24T13:55:39.002948Z",
+    "updated_at": "2026-06-24T13:55:39.002948Z",
+    "ticket_id": "902152d7-8b20-435b-8577-7f284adb378e",
+    "kind": "action_taken",
+    "note": "booking #4 rescheduled to 2026-06-28T20:30:00+05:30",
+    "actor": "agent"
+  },
+  {
+    "id": "c45b5f02-16ed-49e1-a733-ea6cf32b2df9",
+    "created_at": "2026-06-24T13:55:39.002948Z",
+    "updated_at": "2026-06-24T13:55:39.002948Z",
+    "ticket_id": "902152d7-8b20-435b-8577-7f284adb378e",
+    "kind": "resolved",
+    "note": "Ticket auto_resolved. booking #4 rescheduled to 2026-06-28T20:30:00+05:30",
+    "actor": "agent"
+  },
+  {
+    "id": "808fac76-7b22-48d8-9d39-d17537a1664c",
+    "created_at": "2026-06-24T13:55:36.480470Z",
+    "updated_at": "2026-06-24T13:55:36.480470Z",
+    "ticket_id": "902152d7-8b20-435b-8577-7f284adb378e",
+    "kind": "classified",
+    "note": "reschedule (confidence 0.93) \u2192 proposed reschedule. The customer (Diya Kapoor) asked to reschedule her facial to 8:30 PM on the 28th. The matching booking (code 4, Ritu Verma) is on 2026-06-28 and the ticket arrived several days before, so per the policy's \"more than 3 hours before start\" rule the reschedule is free of charge.",
+    "actor": "agent"
+  },
+  {
+    "id": "c5689a71-7819-466a-88e2-70044f5038a8",
+    "created_at": "2026-06-24T13:55:33.374806Z",
+    "updated_at": "2026-06-24T13:55:33.374806Z",
+    "ticket_id": "547b0706-5d97-4aff-a166-917751cb35b5",
+    "kind": "classified",
+    "note": "ambiguous (confidence 0.92) \u2192 proposed none. The message mixes three different asks \u2014 refund, reschedule, and a discount voucher \u2014 plus a complaint about the professional's behaviour last time. Per the support policy, any ticket that mixes multiple issues or asks for something off-policy (a goodwill voucher is not a recognised category) must be classified as ambiguous and handed to a human.",
+    "actor": "agent"
+  },
+  {
+    "id": "0ef22a45-8b48-4d93-8a6c-64d033eb4eaf",
+    "created_at": "2026-06-24T13:55:30.747335Z",
+    "updated_at": "2026-06-24T13:55:30.747335Z",
+    "ticket_id": "d4e38af4-eb23-4141-b2e2-610a006d89d2",
+    "kind": "classified",
+    "note": "cancel_refund (confidence 0.92) \u2192 proposed refund. Per the cancellation policy, a booking cancelled more than 6 hours before the slot receives a full refund. Kabir's massage with Anjali Rao is scheduled 2026-06-27 14:30 UTC, and the ticket arrived ~72 hours ahead, so a full \u20b91,999 refund applies. Because \u20b91,999 exceeds the \u20b91,500 auto-approval cap, the workflow will route this to a human for sign-off.",
+    "actor": "agent"
+  },
+  {
+    "id": "3845c0ed-e46a-4d4f-ab99-e05801307e69",
+    "created_at": "2026-06-24T13:55:27.572601Z",
+    "updated_at": "2026-06-24T13:55:27.572601Z",
+    "ticket_id": "fff18977-6e46-41da-a15e-a79e1f38d106",
+    "kind": "resolved",
+    "note": "Ticket auto_resolved. booking #3 rescheduled to 2026-06-28T12:30:00+00:00",
+    "actor": "agent"
+  },
+  {
+    "id": "ed9bfc1a-6d55-4ded-aed9-dc835d4bde33",
+    "created_at": "2026-06-24T13:55:27.572601Z",
+    "updated_at": "2026-06-24T13:55:27.572601Z",
+    "ticket_id": "fff18977-6e46-41da-a15e-a79e1f38d106",
+    "kind": "action_taken",
+    "note": "booking #3 rescheduled to 2026-06-28T12:30:00+00:00",
+    "actor": "agent"
+  },
+  {
+    "id": "1b3299e2-0efd-471a-b6e4-3a712c61af23",
+    "created_at": "2026-06-24T13:55:25.664699Z",
+    "updated_at": "2026-06-24T13:55:25.664699Z",
+    "ticket_id": "a920fb92-c587-48ff-87e4-857ede316e4c",
+    "kind": "resolved",
+    "note": "Ticket auto_resolved. booking #6 cancelled, \u20b9799.0 refunded",
+    "actor": "agent"
+  },
+  {
+    "id": "f9eba620-9fea-42ff-9e04-6ecbd1320492",
+    "created_at": "2026-06-24T13:55:25.664699Z",
+    "updated_at": "2026-06-24T13:55:25.664699Z",
+    "ticket_id": "a920fb92-c587-48ff-87e4-857ede316e4c",
+    "kind": "action_taken",
+    "note": "booking #6 cancelled, \u20b9799.0 refunded",
+    "actor": "agent"
+  },
+  {
+    "id": "f9b7691e-2d99-464a-aee7-b5fee444f9dc",
+    "created_at": "2026-06-24T13:55:23.648200Z",
+    "updated_at": "2026-06-24T13:55:23.648200Z",
+    "ticket_id": "058d5332-c67a-494a-b5de-937c023f4124",
+    "kind": "action_taken",
+    "note": "booking #13 cancelled, \u20b9899.0 refunded",
+    "actor": "agent"
+  },
+  {
+    "id": "e0c6a44a-8425-48e2-bf4c-d59c20eaf230",
+    "created_at": "2026-06-24T13:55:23.648200Z",
+    "updated_at": "2026-06-24T13:55:23.648200Z",
+    "ticket_id": "058d5332-c67a-494a-b5de-937c023f4124",
+    "kind": "resolved",
+    "note": "Ticket auto_resolved. booking #13 cancelled, \u20b9899.0 refunded",
+    "actor": "agent"
+  },
+  {
+    "id": "64ed32f7-9b2d-4768-84ac-9dd0c502a76f",
+    "created_at": "2026-06-24T13:55:21.550814Z",
+    "updated_at": "2026-06-24T13:55:21.550814Z",
+    "ticket_id": "fff18977-6e46-41da-a15e-a79e1f38d106",
+    "kind": "classified",
+    "note": "reschedule (confidence 0.97) \u2192 proposed reschedule. Customer Aarav Mehta asked to move his haircut on 28 June from 4 PM to 6 PM. The request arrives well before the 3-hour free-reschedule cutoff, so per the reschedule policy the change is free and within auto-approval scope. No-show, refund, and ambiguity rules do not apply.",
+    "actor": "agent"
+  },
+  {
+    "id": "55927f36-f285-4fb8-9c45-909de9966125",
+    "created_at": "2026-06-24T13:55:18.159177Z",
+    "updated_at": "2026-06-24T13:55:18.159177Z",
+    "ticket_id": "a920fb92-c587-48ff-87e4-857ede316e4c",
+    "kind": "classified",
+    "note": "cancel_refund (confidence 0.95) \u2192 proposed refund. Customer Ananya Iyer explicitly requests cancellation of her manicure on 29th June and asks for a refund. The booking (code 6) with Neha Gupta is scheduled for 2026-06-29 05:30 UTC, and the ticket was created 2026-06-24 \u2014 well more than 6 hours before start \u2014 so per the cancellation policy a full refund applies. Amount \u20b9799 is at or below the \u20b91,500 auto-approval cap.",
+    "actor": "agent"
+  },
+  {
+    "id": "5897097c-4f3a-4b57-94bf-b177dfbc336f",
+    "created_at": "2026-06-24T13:55:15.999252Z",
+    "updated_at": "2026-06-24T13:55:15.999252Z",
+    "ticket_id": "058d5332-c67a-494a-b5de-937c023f4124",
+    "kind": "classified",
+    "note": "cancel_refund (confidence 0.95) \u2192 proposed refund. Customer explicitly asks to cancel and refund her manicure on the 27th. Her booking is scheduled for 2026-06-27 06:30 UTC, ~64 hours from ticket creation, well outside the 6-hour cutoff \u2014 so per the cancellation policy she is owed a full refund of the full \u20b9899 amount.",
+    "actor": "agent"
+  }
+]

@@ -1,0 +1,10 @@
+// Fires handle_ticket whenever a ticket is INSERTed. INSERT-only on purpose: the
+// workflow itself UPDATEs tickets (apply_triage / execute_resolution), so firing on
+// UPDATE would loop. The new row's id arrives at start.metadata.record_id.
+{
+  "name": "new-ticket",
+  "schedule_type": "DATASTORE",
+  "config": { "table_name": "tickets", "operations": ["INSERT"] },
+  "workflow_name": "handle_ticket",
+  "is_active": true
+}

@@ -1,0 +1,198 @@
+{
+  "name": "handle_ticket",
+  "description": "Runs the support queue end-to-end for one ticket: triage (agent) -> persist classification -> structural gate -> either take the real booking action automatically, or assign a human approval form and act on their decision.",
+  "start": { "type": "DATASTORE_EVENT", "config": { "table_name": "tickets", "operations": ["INSERT"] } },
+  "nodes": [
+    {
+      "id": "triage",
+      "type": "AGENT",
+      "label": "Triage the ticket",
+      "config": {
+        "agent_name": "triage",
+        "input_mapping": {
+          "ticket_id": { "type": "expression", "value": "start.metadata.record_id" }
+        }
+      }
+    },
+    {
+      "id": "apply_triage",
+      "type": "FUNCTION",
+      "label": "Persist classification",
+      "config": {
+        "function_name": "apply_triage",
+        "input_mapping": {
+          "ticket_id": { "type": "expression", "value": "start.metadata.record_id" },
+          "category": { "type": "expression", "value": "triage.category" },
+          "urgency": { "type": "expression", "value": "triage.urgency" },
+          "confidence": { "type": "expression", "value": "triage.confidence" },
+          "booking_id": { "type": "expression", "value": "triage.booking_id", "optional": true },
+          "proposed_action": { "type": "expression", "value": "triage.proposed_action" },
+          "draft_reply": { "type": "expression", "value": "triage.draft_reply" },
+          "reasoning": { "type": "expression", "value": "triage.reasoning", "optional": true }
+        }
+      }
+    },
+    {
+      "id": "verify_service",
+      "type": "FUNCTION",
+      "label": "Proof-of-service check (anti-fraud)",
+      "config": {
+        "function_name": "verify_service",
+        "input_mapping": {
+          "booking_id": { "type": "expression", "value": "triage.booking_id", "optional": true }
+        }
+      }
+    },
+    {
+      "id": "gate",
+      "type": "DECISION",
+      "label": "Auto-resolvable? (structural + anti-fraud gate)",
+      "config": {
+        "rules": [
+          {
+            "condition": "triage.proposed_action == 'refund' && (verify_service.service_proven == `true` || verify_service.provider_state == 'alerted' || verify_service.provider_state == 'en_route')",
+            "next_node_id": "escalate_form"
+          },
+          {
+            "condition": "(triage.category == 'no_show' || triage.category == 'where_is_pro') && triage.booking_found && verify_service.provider_state != 'stood_down'",
+            "next_node_id": "alert_provider"
+          },
+          {
+            "condition": "triage.confidence >= `0.8` && triage.booking_found && triage.refund_amount <= `1500` && (triage.category == 'reschedule' || triage.category == 'cancel_refund' || triage.category == 'no_show' || triage.category == 'where_is_pro')",
+            "next_node_id": "execute_auto"
+          }
+        ]
+      }
+    },
+    {
+      "id": "execute_auto",
+      "type": "FUNCTION",
+      "label": "Take the booking action (agent)",
+      "config": {
+        "function_name": "execute_resolution",
+        "input_mapping": {
+          "ticket_id": { "type": "expression", "value": "start.metadata.record_id" },
+          "action": { "type": "expression", "value": "triage.proposed_action" },
+          "booking_id": { "type": "expression", "value": "triage.booking_id", "optional": true },
+          "proposed_new_time": { "type": "expression", "value": "triage.proposed_new_time", "optional": true },
+          "reply": { "type": "expression", "value": "triage.draft_reply" },
+          "resolution_status": { "type": "literal", "value": "auto_resolved" },
+          "actor": { "type": "literal", "value": "agent" }
+        }
+      }
+    },
+    {
+      "id": "alert_provider",
+      "type": "FUNCTION",
+      "label": "Alert the professional (client waiting)",
+      "config": {
+        "function_name": "alert_provider",
+        "input_mapping": {
+          "ticket_id": { "type": "expression", "value": "start.metadata.record_id" },
+          "booking_id": { "type": "expression", "value": "triage.booking_id", "optional": true }
+        }
+      }
+    },
+    {
+      "id": "escalate_form",
+      "type": "FORM",
+      "label": "Human review & approval",
+      "config": {
+        "input_schema": {
+          "type": "object",
+          "properties": {
+            "summary": {
+              "type": "string", "title": "Agent reasoning (read-only)",
+              "default": { "type": "expression", "value": "triage.reasoning", "optional": true }
+            },
+            "proof_of_service": {
+              "type": "string", "title": "⚠ Proof-of-service check (read before approving any refund)",
+              "default": { "type": "expression", "value": "verify_service.evidence_summary", "optional": true }
+            },
+            "dispute_flag": {
+              "type": "string", "title": "Dispute reason (if any)",
+              "default": { "type": "expression", "value": "verify_service.dispute_reason", "optional": true }
+            },
+            "approved": { "type": "boolean", "title": "Approve the proposed action / refund?" },
+            "final_reply": {
+              "type": "string", "title": "Reply to the customer (edit as needed)",
+              "default": { "type": "expression", "value": "triage.draft_reply", "optional": true }
+            }
+          },
+          "required": ["approved"]
+        },
+        "ui_schema": { "ui:order": ["summary", "proof_of_service", "dispute_flag", "approved", "final_reply"] }
+      }
+    },
+    {
+      "id": "approved_route",
+      "type": "DECISION",
+      "label": "Human approved?",
+      "config": {
+        "rules": [
+          { "condition": "escalate_form.approved == `true`", "next_node_id": "execute_approved" }
+        ]
+      }
+    },
+    {
+      "id": "execute_approved",
+      "type": "FUNCTION",
+      "label": "Take the booking action (human-approved)",
+      "config": {
+        "function_name": "execute_resolution",
+        "input_mapping": {
+          "ticket_id": { "type": "expression", "value": "start.metadata.record_id" },
+          "action": { "type": "expression", "value": "triage.proposed_action" },
+          "booking_id": { "type": "expression", "value": "triage.booking_id", "optional": true },
+          "proposed_new_time": { "type": "expression", "value": "triage.proposed_new_time", "optional": true },
+          "reply": { "type": "expression", "value": "escalate_form.final_reply", "optional": true },
+          "resolution_status": { "type": "literal", "value": "resolved" },
+          "actor": { "type": "literal", "value": "human" }
+        }
+      }
+    },
+    {
+      "id": "mark_escalated",
+      "type": "FUNCTION",
+      "label": "Leave escalated (not approved)",
+      "config": {
+        "function_name": "execute_resolution",
+        "input_mapping": {
+          "ticket_id": { "type": "expression", "value": "start.metadata.record_id" },
+          "action": { "type": "literal", "value": "none" },
+          "reply": { "type": "expression", "value": "escalate_form.final_reply", "optional": true },
+          "resolution_status": { "type": "literal", "value": "escalated" },
+          "actor": { "type": "literal", "value": "human" }
+        }
+      }
+    },
+    {
+      "id": "notify",
+      "type": "FUNCTION",
+      "label": "Email the customer the outcome",
+      "config": {
+        "function_name": "notify_customer",
+        "input_mapping": {
+          "ticket_id": { "type": "expression", "value": "start.metadata.record_id" }
+        }
+      }
+    },
+    { "id": "end", "type": "END", "label": "Done" }
+  ],
+  "edges": [
+    { "id": "e1", "source": "triage", "target": "apply_triage" },
+    { "id": "e2", "source": "apply_triage", "target": "verify_service" },
+    { "id": "e2b", "source": "verify_service", "target": "gate" },
+    { "id": "e3", "source": "gate", "target": "escalate_form", "label": "not auto-resolvable (default)" },
+    { "id": "e4", "source": "gate", "target": "execute_auto", "label": "auto-resolvable" },
+    { "id": "e_alert1", "source": "gate", "target": "alert_provider", "label": "customer waiting -> alert pro" },
+    { "id": "e_alert2", "source": "alert_provider", "target": "notify" },
+    { "id": "e5", "source": "execute_auto", "target": "notify" },
+    { "id": "e5b", "source": "notify", "target": "end" },
+    { "id": "e6", "source": "escalate_form", "target": "approved_route" },
+    { "id": "e7", "source": "approved_route", "target": "mark_escalated", "label": "not approved (default)" },
+    { "id": "e8", "source": "approved_route", "target": "execute_approved", "label": "approved" },
+    { "id": "e9", "source": "execute_approved", "target": "notify" },
+    { "id": "e10", "source": "mark_escalated", "target": "end" }
+  ]
+}

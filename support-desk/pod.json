@@ -1,0 +1,5 @@
+{
+  "name": "support-desk",
+  "description": "YesMadam-style at-home services support desk: an agent that triages the inbound ticket queue, takes the real booking action (reschedule / refund / replacement) on its own, and escalates the genuinely hard cases to a human.",
+  "format_version": 1
+}

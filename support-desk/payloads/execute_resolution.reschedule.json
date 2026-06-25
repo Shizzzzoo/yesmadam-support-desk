@@ -1,0 +1,9 @@
+{
+  "ticket_id": "REPLACE_WITH_A_TICKET_ID",
+  "action": "reschedule",
+  "booking_id": "REPLACE_WITH_THE_LINKED_BOOKING_ID",
+  "proposed_new_time": "2026-06-28T18:00:00+05:30",
+  "reply": "Done! I've moved your haircut to 6:00 PM on the 28th. See you then.",
+  "resolution_status": "auto_resolved",
+  "actor": "agent"
+}

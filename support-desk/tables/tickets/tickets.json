@@ -1,0 +1,31 @@
+// tickets — the queue; the unit of work. A new row here fires the handle_ticket
+// workflow (see schedules/new-ticket). The agent persists its classification back
+// onto the row (apply_triage) so the operator app can render it.
+{
+  "name": "tickets",
+  "primary_key_column": "id",
+  "enable_rls": false,
+  "columns": [
+    { "name": "number", "type": "SERIAL", "auto": true, "unique": true },
+    { "name": "customer_name", "type": "TEXT", "required": true, "max_length": 160 },
+    { "name": "channel", "type": "ENUM", "required": true, "default": "whatsapp",
+      "options": ["whatsapp", "app_chat", "email"] },
+    { "name": "raw_message", "type": "TEXT", "required": true, "max_length": 4000,
+      "description": "Exactly what the customer wrote — the agent's input" },
+    { "name": "booking_id", "type": "UUID", "foreign_key": { "references": "bookings.id" },
+      "description": "Linked by the agent during triage" },
+    { "name": "category", "type": "ENUM", "default": "ambiguous",
+      "options": ["reschedule", "cancel_refund", "no_show", "where_is_pro", "other", "ambiguous"],
+      "description": "Defaults to ambiguous so an unclassified ticket escalates by design" },
+    { "name": "urgency", "type": "ENUM", "default": "normal",
+      "options": ["low", "normal", "high", "urgent"] },
+    { "name": "status", "type": "ENUM", "required": true, "default": "new",
+      "options": ["new", "triaged", "auto_resolved", "waiting_approval", "escalated", "resolved"] },
+    { "name": "agent_decision", "type": "JSON",
+      "description": "Full classification: category, action, confidence, reasoning" },
+    { "name": "draft_reply", "type": "TEXT", "max_length": 4000 },
+    { "name": "confidence", "type": "FLOAT", "description": "Agent's classification confidence 0..1" },
+    { "name": "run_id", "type": "TEXT", "max_length": 120, "description": "Workflow run id — jump from ticket to run history" }
+  ],
+  "config": {}
+}

@@ -1,0 +1,13 @@
+{
+  "name": "apply_reschedule",
+  "description": "Customer accepted the pro's proposed new time: validates it's still in the future, then locks the booking en_route and confirms via execute_resolution(reschedule). Falls back to stand_down if the new_time is missing/invalid.",
+  "type": "API",
+  "code": { "$file": "code.py" },
+  "permissions": { "grants": [
+    { "resource_type": "datastore_table", "resource_name": "provider_responses", "permission_ids": ["datastore.table.read", "datastore.record.read"] },
+    { "resource_type": "datastore_table", "resource_name": "bookings", "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] },
+    { "resource_type": "datastore_table", "resource_name": "ticket_events", "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] },
+    { "resource_type": "function", "resource_name": "execute_resolution", "permission_ids": ["function.execute"] },
+    { "resource_type": "function", "resource_name": "stand_down", "permission_ids": ["function.execute"] }
+  ] }
+}

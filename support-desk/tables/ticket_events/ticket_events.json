@@ -1,0 +1,16 @@
+// ticket_events — the audit trail. Proves "it did the work": every classification,
+// booking action, escalation, and resolution lands here with who did it (agent vs human).
+{
+  "name": "ticket_events",
+  "primary_key_column": "id",
+  "enable_rls": false,
+  "columns": [
+    { "name": "ticket_id", "type": "UUID", "required": true,
+      "foreign_key": { "references": "tickets.id" } },
+    { "name": "kind", "type": "ENUM", "required": true,
+      "options": ["created", "classified", "action_taken", "escalated", "approved", "resolved"] },
+    { "name": "note", "type": "TEXT", "max_length": 2000 },
+    { "name": "actor", "type": "TEXT", "max_length": 80, "description": "'agent' or 'human'" }
+  ],
+  "config": {}
+}

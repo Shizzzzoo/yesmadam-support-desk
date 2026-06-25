@@ -1,0 +1,11 @@
+// Fires provider_reply whenever a provider_responses row is UPDATEd (the professional
+// chose an option, the customer accepted/declined a reschedule, or the SLA sweeper
+// expired the row). UPDATE-only: the row is INSERTed as 'awaiting' by alert_provider,
+// which must NOT fire this workflow — only the later status change should.
+{
+  "name": "provider-reply",
+  "schedule_type": "DATASTORE",
+  "config": { "table_name": "provider_responses", "operations": ["UPDATE"] },
+  "workflow_name": "provider_reply",
+  "is_active": true
+}

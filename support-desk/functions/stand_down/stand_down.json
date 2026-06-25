@@ -1,0 +1,12 @@
+{
+  "name": "stand_down",
+  "description": "Releases the en-route lock and resolves the ticket via execute_resolution(assign_replacement), which falls back to a full refund when no replacement is available.",
+  "type": "API",
+  "code": { "$file": "code.py" },
+  "permissions": { "grants": [
+    { "resource_type": "datastore_table", "resource_name": "provider_responses", "permission_ids": ["datastore.table.read", "datastore.record.read"] },
+    { "resource_type": "datastore_table", "resource_name": "bookings", "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] },
+    { "resource_type": "datastore_table", "resource_name": "ticket_events", "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] },
+    { "resource_type": "function", "resource_name": "execute_resolution", "permission_ids": ["function.execute"] }
+  ] }
+}

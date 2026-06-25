@@ -1,0 +1,39 @@
+{
+  "name": "triage",
+  "description": "Reads one support ticket, retrieves the policy, finds the matching booking, and returns a structured triage decision (category, urgency, proposed booking action, confidence, draft reply). Read-only: it judges; the workflow takes the action.",
+  "instruction": { "$file": "instruction.md" },
+  "toolsets": ["POD"],
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "ticket_id": { "type": "string", "description": "The tickets.id row to triage" }
+    },
+    "required": ["ticket_id"]
+  },
+  "output_schema": {
+    "type": "object",
+    "properties": {
+      "category": { "type": "string", "enum": ["reschedule", "cancel_refund", "no_show", "where_is_pro", "other", "ambiguous"] },
+      "urgency": { "type": "string", "enum": ["low", "normal", "high", "urgent"] },
+      "confidence": { "type": "number", "description": "0..1 confidence in the classification" },
+      "booking_found": { "type": "boolean" },
+      "booking_id": { "type": "string", "description": "Matched bookings.id, or empty string if none" },
+      "proposed_action": { "type": "string", "enum": ["reschedule", "refund", "assign_replacement", "none"] },
+      "proposed_new_time": { "type": "string", "description": "ISO datetime for a reschedule, else empty string" },
+      "refund_amount": { "type": "number", "description": "INR to refund for a refund action, else 0" },
+      "draft_reply": { "type": "string", "description": "Customer-facing reply to send" },
+      "reasoning": { "type": "string", "description": "One or two sentences citing the policy rule applied" }
+    },
+    "required": ["category", "urgency", "confidence", "booking_found", "booking_id", "proposed_action", "proposed_new_time", "refund_amount", "draft_reply", "reasoning"]
+  },
+  "permissions": { "grants": [
+    { "resource_type": "datastore_table", "resource_name": "tickets",
+      "permission_ids": ["datastore.table.read", "datastore.record.read"] },
+    { "resource_type": "datastore_table", "resource_name": "bookings",
+      "permission_ids": ["datastore.table.read", "datastore.record.read"] },
+    { "resource_type": "datastore_table", "resource_name": "professionals",
+      "permission_ids": ["datastore.table.read", "datastore.record.read"] },
+    { "resource_type": "folder", "resource_name": "/knowledge",
+      "permission_ids": ["folder.read"] }
+  ] }
+}

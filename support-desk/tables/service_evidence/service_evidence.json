@@ -1,0 +1,20 @@
+// service_evidence — the provider's proof-of-service log for a booking. The desk
+// reads this (plus the booking's own check-in/OTP fields) to decide whether a
+// "cancel & refund me" request is legitimate or a sneaky cancel after work was done.
+// Photo evidence is supported via file_path but optional in v1 (check-in + OTP carry it).
+{
+  "name": "service_evidence",
+  "primary_key_column": "id",
+  "enable_rls": false,
+  "columns": [
+    { "name": "booking_id", "type": "UUID", "required": true,
+      "foreign_key": { "references": "bookings.id" } },
+    { "name": "kind", "type": "ENUM", "required": true,
+      "options": ["arrival_checkin", "start_otp", "before_photo", "after_photo", "completion_otp", "work_note"] },
+    { "name": "occurred_at", "type": "DATETIME", "description": "When this signal was captured" },
+    { "name": "geo", "type": "TEXT", "max_length": 120, "description": "Location of the signal (for check-ins)" },
+    { "name": "file_path", "type": "FILE_PATH", "max_length": 500, "description": "Optional photo evidence (Lemma file)" },
+    { "name": "note", "type": "TEXT", "max_length": 1000 }
+  ],
+  "config": {}
+}

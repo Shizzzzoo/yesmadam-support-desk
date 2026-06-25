@@ -1,0 +1,16 @@
+{
+  "name": "notify_customer",
+  "description": "Sends the customer the resolution message (refund confirmation / new time / apology) as a real email via the Gmail connector, and logs a 'notified' event. Non-blocking: if no email is on file or no Gmail account is connected, it records that and returns without failing the run.",
+  "type": "API",
+  "code": { "$file": "code.py" },
+  "permissions": { "grants": [
+    { "resource_type": "datastore_table", "resource_name": "tickets",
+      "permission_ids": ["datastore.table.read", "datastore.record.read"] },
+    { "resource_type": "datastore_table", "resource_name": "bookings",
+      "permission_ids": ["datastore.table.read", "datastore.record.read"] },
+    { "resource_type": "datastore_table", "resource_name": "ticket_events",
+      "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] },
+    { "resource_type": "connector", "resource_name": "gmail",
+      "permission_ids": ["connector.use"] }
+  ] }
+}

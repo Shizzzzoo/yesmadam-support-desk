@@ -1,0 +1,41 @@
+// bookings — the system the agent ACTS on. This is the differentiator: when the
+// agent resolves a reschedule/refund/replacement, THIS row visibly changes.
+// Shared (enable_rls:false) — the whole ops team works one set of bookings.
+{
+  "name": "bookings",
+  "primary_key_column": "id",
+  "enable_rls": false,
+  "columns": [
+    { "name": "code", "type": "SERIAL", "auto": true, "unique": true, "description": "Human-friendly booking number" },
+    { "name": "customer_name", "type": "TEXT", "required": true, "max_length": 160 },
+    { "name": "customer_email", "type": "TEXT", "max_length": 200, "description": "Where refund/booking confirmations are sent" },
+    { "name": "service", "type": "ENUM", "required": true,
+      "options": ["haircut", "facial", "massage", "manicure", "waxing"] },
+    { "name": "professional_name", "type": "TEXT", "max_length": 160 },
+    { "name": "scheduled_at", "type": "DATETIME", "required": true },
+    { "name": "status", "type": "ENUM", "required": true, "default": "scheduled",
+      "options": ["scheduled", "in_progress", "completed", "cancelled", "no_show", "rescheduled"] },
+    { "name": "amount", "type": "FLOAT", "required": true, "description": "Booking value in INR" },
+    { "name": "address", "type": "TEXT", "max_length": 400 },
+    { "name": "last_action", "type": "TEXT", "max_length": 400, "description": "Most recent action the desk took on this booking (audit-at-a-glance)" },
+
+    { "name": "payment_status", "type": "ENUM", "default": "prepaid",
+      "options": ["prepaid", "pay_after"],
+      "description": "Prepaid = money already taken (refund moves money); pay_after = nothing to refund on cancel" },
+    { "name": "refund_status", "type": "ENUM", "default": "none",
+      "options": ["none", "full", "partial", "blocked", "denied"],
+      "description": "Outcome of any refund decision; 'blocked'/'denied' = proof-of-service stopped a payout" },
+
+    { "name": "check_in_at", "type": "DATETIME",
+      "description": "Provider's geo-stamped arrival ping; null = never arrived (proof of service)" },
+    { "name": "check_in_geo", "type": "TEXT", "max_length": 120, "description": "Lat,long or locality of the arrival ping" },
+    { "name": "start_otp_verified", "type": "BOOLEAN", "default": false,
+      "description": "Client gave the provider the start OTP — strong proof the client acknowledged arrival" },
+    { "name": "completion_otp_verified", "type": "BOOLEAN", "default": false,
+      "description": "Client confirmed completion with an OTP — strongest 'work done' proof" }
+    ,{ "name": "provider_state", "type": "ENUM", "default": "idle",
+      "options": ["idle", "alerted", "en_route", "stood_down"],
+      "description": "Coordination lock: alerted=pinged; en_route=committed (blocks refunds); stood_down=out/timed-out (refund/replace allowed)" }
+  ],
+  "config": {}
+}

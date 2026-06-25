@@ -1,0 +1,11 @@
+{
+  "name": "sweep_sla",
+  "description": "Cron-driven wrapper so the TIME schedule has a workflow to fire. Every minute: expire provider_responses rows past the 5-minute SLA (awaiting -> no_response, reschedule offer -> customer_declined), which fires provider_reply to resolve the customer.",
+  "start": { "type": "SCHEDULED", "config": { "schedule_type": "CRON" } },
+  "nodes": [
+    { "id": "sweep", "type": "FUNCTION", "label": "Sweep overdue coordination rows",
+      "config": { "function_name": "sweep_provider_sla", "input_mapping": {} } },
+    { "id": "end", "type": "END", "label": "Done" }
+  ],
+  "edges": [ { "id": "s1", "source": "sweep", "target": "end" } ]
+}

@@ -1,0 +1,10 @@
+// Time-based sweep: every minute, fire sweep_sla to expire overdue coordination rows.
+// Verified (Task 1): TimeScheduleConfig = {"cron": "<expr>"}; schedules target a workflow
+// (exactly one of agent_name | workflow_name), never a bare function.
+{
+  "name": "provider-sla",
+  "schedule_type": "TIME",
+  "config": { "cron": "* * * * *" },
+  "workflow_name": "sweep_sla",
+  "is_active": true
+}

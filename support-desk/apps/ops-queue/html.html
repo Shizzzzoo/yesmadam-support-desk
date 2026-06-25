@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Support Desk — Ops Queue</title>
+  <style>
+    :root {
+      --bg: #1a1416;            /* deep warm plum-black */
+      --surface-1: #241a1d;
+      --surface-2: #2e2125;
+      --surface-3: #3a2a30;
+      --border: #4a363d;
+      --border-strong: #66474f;
+      --text: #f6ecef;
+      --text-2: #d6c1c8;
+      --muted: #a98c95;
+      --accent: #ff4d8d;       /* YesMadam magenta */
+      --accent-hover: #ff6fa3;
+      --ok: #3ddc97;
+      --warn: #ffb547;
+      --info: #5aa9ff;
+      --danger: #ff6b6b;
+      --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+      --space-6: 24px; --space-8: 32px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 14px; }
+    a { color: var(--accent); }
+    .mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+    header {
+      display: flex; align-items: center; gap: var(--space-4);
+      padding: var(--space-4) var(--space-6);
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, var(--surface-2), var(--surface-1));
+    }
+    header .logo { width: 28px; height: 28px; border-radius: 8px;
+      background: radial-gradient(circle at 30% 30%, var(--accent-hover), var(--accent));
+      box-shadow: 0 0 16px rgba(255,77,141,.4); }
+    header h1 { font-size: 15px; margin: 0; letter-spacing: .2px; }
+    header .sub { color: var(--muted); font-size: 12px; }
+    header .spacer { flex: 1; }
+
+    /* metric banner */
+    .metrics { display: flex; gap: var(--space-3); padding: var(--space-4) var(--space-6) 0; flex-wrap: wrap; }
+    .metric { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px;
+      padding: var(--space-3) var(--space-4); min-width: 132px; }
+    .metric .v { font-size: 24px; font-weight: 650; }
+    .metric .l { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .6px; margin-top: 2px; }
+    .metric.accent .v { color: var(--accent); }
+    .metric.ok .v { color: var(--ok); }
+    .metric.warn .v { color: var(--warn); }
+
+    main { display: grid; grid-template-columns: 380px 1fr; gap: var(--space-4);
+      padding: var(--space-4) var(--space-6) var(--space-8); align-items: start; }
+    @media (max-width: 880px) { main { grid-template-columns: 1fr; } }
+
+    .panel { background: var(--surface-1); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+    .panel > h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .7px; color: var(--muted);
+      margin: 0; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--border); }
+
+    /* queue */
+    .queue { max-height: 72vh; overflow-y: auto; }
+    .row { display: block; width: 100%; text-align: left; background: none; border: none; cursor: pointer;
+      padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--border);
+      border-left: 3px solid transparent; color: var(--text); }
+    .row:hover { background: var(--surface-2); }
+    .row.sel { background: var(--surface-2); border-left-color: var(--accent); }
+    .row .top { display: flex; align-items: center; gap: var(--space-2); margin-bottom: 3px; }
+    .row .num { color: var(--muted); font-size: 12px; }
+    .row .who { font-weight: 600; }
+    .row .msg { color: var(--text-2); font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .row .meta { display: flex; gap: var(--space-2); margin-top: var(--space-2); flex-wrap: wrap; }
+
+    .badge { font-size: 10.5px; font-weight: 650; text-transform: uppercase; letter-spacing: .5px;
+      padding: 2px 7px; border-radius: 999px; border: 1px solid var(--border-strong); color: var(--text-2); }
+    .badge.s-new { color: var(--info); border-color: var(--info); }
+    .badge.s-triaged { color: var(--text-2); }
+    .badge.s-auto_resolved { color: var(--ok); border-color: var(--ok); }
+    .badge.s-resolved { color: var(--ok); border-color: var(--ok); }
+    .badge.s-waiting_approval, .badge.s-escalated { color: var(--warn); border-color: var(--warn); }
+    .badge.s-awaiting_provider { color: var(--accent); border-color: var(--accent); }
+    .badge.lock { color: var(--warn); border-color: var(--warn); }
+    .badge.u-urgent, .badge.u-high { color: var(--danger); border-color: var(--danger); }
+    .coord { background: var(--surface-3); border: 1px solid var(--warn); border-radius: 12px; padding: 12px 14px; margin-top: 12px; }
+    .coord .ch { font-weight: 700; color: var(--warn); margin-bottom: 6px; }
+    .coord .cn { color: var(--text-2); font-size: 13px; }
+
+    /* detail */
+    .detail { padding: var(--space-4) var(--space-6); }
+    .detail .empty { color: var(--muted); padding: var(--space-8); text-align: center; }
+    .block { margin-bottom: var(--space-6); }
+    .block h3 { font-size: 11px; text-transform: uppercase; letter-spacing: .7px; color: var(--muted); margin: 0 0 var(--space-2); }
+    .quote { background: var(--surface-2); border-left: 3px solid var(--border-strong); border-radius: 8px;
+      padding: var(--space-3) var(--space-4); color: var(--text); }
+    .kv { display: grid; grid-template-columns: 140px 1fr; gap: var(--space-2) var(--space-4); }
+    .kv .k { color: var(--muted); }
+    .reply { background: var(--surface-2); border: 1px dashed var(--border-strong); border-radius: 10px;
+      padding: var(--space-3) var(--space-4); white-space: pre-wrap; }
+
+    /* booking card — the hero, it visibly changes */
+    .booking { background: linear-gradient(160deg, var(--surface-3), var(--surface-2));
+      border: 1px solid var(--border-strong); border-radius: 12px; padding: var(--space-4); }
+    .booking .bh { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-3); }
+    .booking .code { font-weight: 700; }
+    .booking .last { margin-top: var(--space-3); padding-top: var(--space-3); border-top: 1px solid var(--border);
+      color: var(--accent-hover); font-size: 12.5px; }
+    .proof { margin-top: var(--space-3); padding: var(--space-3); border-radius: 9px;
+      background: rgba(255,181,71,.08); border: 1px solid var(--warn); font-size: 12.5px; }
+    .proof .proof-h { color: var(--warn); font-weight: 650; margin-bottom: var(--space-1); }
+    .proof .proof-n { margin-top: var(--space-2); color: var(--muted); font-style: italic; }
+
+    .confbar { height: 6px; border-radius: 4px; background: var(--surface-3); overflow: hidden; margin-top: var(--space-1); }
+    .confbar > span { display: block; height: 100%; background: var(--accent); }
+
+    button.act { background: var(--accent); color: #2a0d18; border: none; font-weight: 650; cursor: pointer;
+      padding: 8px 16px; border-radius: 9px; }
+    button.act:hover { background: var(--accent-hover); }
+    button.ghost { background: transparent; color: var(--text-2); border: 1px solid var(--border-strong);
+      padding: 8px 16px; border-radius: 9px; cursor: pointer; }
+    .approvals .item { padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--border); }
+    .approvals textarea { width: 100%; background: var(--surface-2); color: var(--text); border: 1px solid var(--border-strong);
+      border-radius: 8px; padding: var(--space-2); font-family: var(--sans); margin: var(--space-2) 0; }
+    .approvals .btns { display: flex; gap: var(--space-2); }
+    .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background: var(--surface-3); border: 1px solid var(--border-strong); padding: 10px 18px; border-radius: 10px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.5); opacity: 0; transition: opacity .2s; pointer-events: none; }
+    .toast.show { opacity: 1; }
+    .skeleton { padding: var(--space-6); color: var(--muted); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"></div>
+    <div>
+      <h1>Support Desk · Ops Queue</h1>
+      <div class="sub">At-home services — the agent runs the queue, you handle the hard cases</div>
+    </div>
+    <div class="spacer"></div>
+    <div class="sub mono" id="user"></div>
+  </header>
+
+  <div class="metrics" id="metrics"></div>
+
+  <main>
+    <section class="panel">
+      <h2>Inbound queue</h2>
+      <div class="queue" id="queue"><div class="skeleton">Loading tickets…</div></div>
+    </section>
+
+    <section class="panel">
+      <h2>Ticket detail</h2>
+      <div class="detail" id="detail"><div class="empty">Select a ticket to see the agent's decision and the linked booking.</div></div>
+    </section>
+  </main>
+
+  <section class="panel approvals" style="margin: 0 24px 32px;">
+    <h2>Approval inbox — escalated tickets waiting on you</h2>
+    <div id="approvals"><div class="skeleton">Loading…</div></div>
+  </section>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    (function () {
+      var cfg = window.__LEMMA_CONFIG__ || {};
+      var base = (cfg.apiUrl || window.location.origin).replace(/\/$/, "");
+      var s = document.createElement("script");
+      s.src = base + "/public/sdk/lemma-client.js";
+      s.onload = boot;
+      s.onerror = function () {
+        document.getElementById("queue").innerHTML = '<div class="skeleton">Could not load the Lemma SDK.</div>';
+      };
+      document.head.appendChild(s);
+    })();
+
+    var client, bookings = new Map(), tickets = new Map(), provResponses = new Map(), selectedId = null;
+
+    function toast(msg) {
+      var t = document.getElementById("toast");
+      t.textContent = msg; t.classList.add("show");
+      setTimeout(function () { t.classList.remove("show"); }, 2200);
+    }
+    function esc(v) { return String(v == null ? "" : v).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+    function fmtTime(iso) { if (!iso) return "—"; var d = new Date(iso); return isNaN(d) ? iso : d.toLocaleString(); }
+    function fmtINR(n) { return n == null ? "—" : "₹" + Number(n).toLocaleString("en-IN"); }
+    function proofBlock(b) {
+      var bits = [];
+      if (b.check_in_at) bits.push("Provider checked in " + fmtTime(b.check_in_at) + (b.check_in_geo ? " · " + b.check_in_geo : ""));
+      if (b.start_otp_verified) bits.push("Start OTP verified by client");
+      if (b.completion_otp_verified) bits.push("Completion OTP verified");
+      if (b.status === "in_progress" || b.status === "completed") bits.push("Work status: " + b.status.replace(/_/g, " "));
+      if (!bits.length) return "";
+      return '<div class="proof"><div class="proof-h">🛡 Proof of service on file</div>' +
+        bits.map(function (x) { return '<div>• ' + esc(x) + '</div>'; }).join("") +
+        '<div class="proof-n">A refund here is auto-blocked and sent for human review.</div></div>';
+    }
+
+    async function boot() {
+      client = new window.LemmaClient.LemmaClient();
+      var state = await client.initialize();
+      if (state.status !== "authenticated") { client.auth.redirectToAuth(); return; }
+      document.getElementById("user").textContent = (state.user && (state.user.email || state.user.name)) || "";
+
+      await loadBookings();
+      await loadProviderResponses();
+      await loadTickets();
+      await loadMetrics();
+      await loadApprovals();
+
+      // live: keep the queue + booking detail fresh without polling
+      client.datastore.watchChanges({ table: "tickets", onChange: function (f) {
+        if (f.operation === "delete") tickets.delete(f.record_id);
+        else tickets.set(f.record_id, Object.assign({}, tickets.get(f.record_id), f.payload, { id: f.record_id }));
+        renderQueue(); loadMetrics();
+        if (f.record_id === selectedId) renderDetail();
+      }});
+      client.datastore.watchChanges({ table: "bookings", onChange: function (f) {
+        if (f.operation !== "delete") bookings.set(f.record_id, Object.assign({}, bookings.get(f.record_id), f.payload, { id: f.record_id }));
+        if (selectedId) renderDetail();   // booking row changed → re-render the hero card
+      }});
+      client.datastore.watchChanges({ table: "provider_responses", onChange: function (f) {
+        if (f.operation === "delete") provResponses.delete(f.record_id);
+        else provResponses.set(f.record_id, Object.assign({}, provResponses.get(f.record_id), f.payload, { id: f.record_id }));
+        if (selectedId) renderDetail();   // pro replied / SLA fired → refresh coordination
+      }});
+    }
+
+    async function loadProviderResponses() {
+      try {
+        var res = await client.records.list("provider_responses", { limit: 200 });
+        (res.items || []).forEach(function (r) { provResponses.set(r.id, r); });
+      } catch (e) { /* table may be empty before any coordination happens */ }
+    }
+    function latestResponseForTicket(ticketId) {
+      var rows = [...provResponses.values()].filter(function (r) { return r.ticket_id === ticketId; });
+      rows.sort(function (a, b) { return String(b.alerted_at || "").localeCompare(String(a.alerted_at || "")); });
+      return rows[0] || null;
+    }
+    function minsLeft(alertedAt) {
+      var t = Date.parse(alertedAt); if (!t) return null;
+      var left = 5 - (Date.now() - t) / 60000;
+      return left > 0 ? Math.ceil(left) : 0;
+    }
+
+    async function loadBookings() {
+      var res = await client.records.list("bookings", { limit: 200 });
+      (res.items || []).forEach(function (b) { bookings.set(b.id, b); });
+    }
+    async function loadTickets() {
+      var res = await client.records.list("tickets", { limit: 200, sort: [{ field: "number", direction: "desc" }] });
+      (res.items || []).forEach(function (t) { tickets.set(t.id, t); });
+      renderQueue();
+    }
+    async function loadMetrics() {
+      try {
+        var res = await client.datastore.query(
+          "select status, count(*) as n from tickets group by status");
+        var by = {}; (res.items || []).forEach(function (r) { by[r.status] = Number(r.n); });
+        var total = Object.values(by).reduce(function (a, b) { return a + b; }, 0);
+        var auto = by.auto_resolved || 0;
+        var esc = (by.escalated || 0) + (by.waiting_approval || 0);
+        var resolved = by.resolved || 0;
+        var rate = total ? Math.round((auto / total) * 100) : 0;
+        document.getElementById("metrics").innerHTML =
+          metric("accent", total, "tickets") +
+          metric("ok", auto, "auto-resolved") +
+          metric("ok", resolved, "human-resolved") +
+          metric("warn", esc, "needs a human") +
+          metric("accent", rate + "%", "auto-resolution rate");
+      } catch (e) { /* metrics are best-effort */ }
+    }
+    function metric(cls, v, l) {
+      return '<div class="metric ' + cls + '"><div class="v">' + esc(v) + '</div><div class="l">' + esc(l) + '</div></div>';
+    }
+
+    function renderQueue() {
+      var arr = [...tickets.values()].sort(function (a, b) { return (b.number || 0) - (a.number || 0); });
+      if (!arr.length) { document.getElementById("queue").innerHTML = '<div class="skeleton">No tickets yet. Seed the pod to see the desk work.</div>'; return; }
+      document.getElementById("queue").innerHTML = arr.map(function (t) {
+        return '<button class="row ' + (t.id === selectedId ? "sel" : "") + '" onclick="select(\'' + t.id + '\')">' +
+          '<div class="top"><span class="num mono">#' + esc(t.number) + '</span> <span class="who">' + esc(t.customer_name) + '</span></div>' +
+          '<div class="msg">' + esc(t.raw_message) + '</div>' +
+          '<div class="meta">' +
+            '<span class="badge s-' + esc(t.status) + '">' + esc((t.status || "").replace(/_/g, " ")) + '</span>' +
+            (function () { var pr = latestResponseForTicket(t.id); return (pr && pr.status === "awaiting") ? '<span class="badge s-awaiting_provider">⏳ awaiting pro</span>' : ""; })() +
+            (t.category ? '<span class="badge">' + esc(t.category.replace(/_/g, " ")) + '</span>' : "") +
+            (t.urgency ? '<span class="badge u-' + esc(t.urgency) + '">' + esc(t.urgency) + '</span>' : "") +
+          '</div>' +
+        '</button>';
+      }).join("");
+    }
+
+    window.select = function (id) { selectedId = id; renderQueue(); renderDetail(); };
+
+    function renderDetail() {
+      var t = tickets.get(selectedId);
+      var el = document.getElementById("detail");
+      if (!t) { el.innerHTML = '<div class="empty">Select a ticket.</div>'; return; }
+      var dec = t.agent_decision || {};
+      var b = t.booking_id ? bookings.get(t.booking_id) : null;
+      var conf = t.confidence != null ? Math.round(t.confidence * 100) : null;
+
+      var html = "";
+      html += '<div class="block"><h3>Customer message · ' + esc(t.channel) + ' · #' + esc(t.number) + '</h3>' +
+              '<div class="quote">' + esc(t.raw_message) + '</div></div>';
+
+      html += '<div class="block"><h3>Agent decision</h3><div class="kv">' +
+        '<div class="k">Category</div><div>' + esc((t.category || "—").replace(/_/g, " ")) + '</div>' +
+        '<div class="k">Urgency</div><div>' + esc(t.urgency || "—") + '</div>' +
+        '<div class="k">Proposed action</div><div>' + esc((dec.proposed_action || "—").replace(/_/g, " ")) + '</div>' +
+        '<div class="k">Confidence</div><div>' + (conf != null ? conf + '%<div class="confbar"><span style="width:' + conf + '%"></span></div>' : "—") + '</div>' +
+        '<div class="k">Reasoning</div><div>' + esc(dec.reasoning || "—") + '</div>' +
+        '</div></div>';
+
+      html += '<div class="block"><h3>Drafted reply</h3><div class="reply">' + esc(t.draft_reply || "—") + '</div></div>';
+
+      var pr = latestResponseForTicket(t.id);
+      if (pr) {
+        var awaiting = (pr.status === "awaiting");
+        var ml = minsLeft(pr.alerted_at);
+        html += '<div class="block"><h3>Provider coordination</h3><div class="coord">' +
+          '<div class="ch">📣 ' + esc(pr.professional_name || "Professional") + ' — ' + esc((pr.status || "awaiting").replace(/_/g, " ")) + '</div>' +
+          '<div class="cn">' +
+            (awaiting
+              ? ("Client waiting · alerted from YesMadam · " + (ml != null ? (ml + " min left before auto-refund") : "SLA running"))
+              : "Provider responded; resolution applied.") +
+            (pr.eta_minutes ? " · ETA " + esc(pr.eta_minutes) + "m" : "") +
+            (pr.proposed_new_time ? " · proposed " + esc(fmtTime(pr.proposed_new_time)) : "") +
+          '</div></div></div>';
+      }
+
+      html += '<div class="block"><h3>Linked booking ' + (b ? "(this row is what the desk acts on)" : "") + '</h3>';
+      if (b) {
+        html += '<div class="booking">' +
+          '<div class="bh"><span class="code mono">Booking #' + esc(b.code) + '</span>' +
+            '<span class="badge s-' + esc(b.status) + '">' + esc((b.status || "").replace(/_/g, " ")) + '</span>' +
+            ((b.provider_state === "alerted" || b.provider_state === "en_route") ? '<span class="badge lock">🔒 pro ' + esc(b.provider_state.replace(/_/g, " ")) + '</span>' : "") +
+          '</div>' +
+          '<div class="kv">' +
+            '<div class="k">Customer</div><div>' + esc(b.customer_name) + '</div>' +
+            '<div class="k">Service</div><div>' + esc(b.service) + '</div>' +
+            '<div class="k">Professional</div><div>' + esc(b.professional_name || "—") + '</div>' +
+            '<div class="k">Scheduled</div><div class="mono">' + esc(fmtTime(b.scheduled_at)) + '</div>' +
+            '<div class="k">Amount</div><div>' + esc(fmtINR(b.amount)) + (b.payment_status ? ' <span class="badge">' + esc(b.payment_status.replace(/_/g," ")) + '</span>' : "") + '</div>' +
+            '<div class="k">Address</div><div>' + esc(b.address || "—") + '</div>' +
+            (b.refund_status && b.refund_status !== "none" ? '<div class="k">Refund</div><div><span class="badge s-' + (b.refund_status==="full"?"auto_resolved":"escalated") + '">' + esc(b.refund_status) + '</span></div>' : "") +
+          '</div>' +
+          proofBlock(b) +
+          (b.last_action ? '<div class="last">↳ ' + esc(b.last_action) + '</div>' : "") +
+        '</div>';
+      } else {
+        html += '<div class="empty">No booking linked — the agent escalates these.</div>';
+      }
+      html += '</div>';
+
+      el.innerHTML = html;
+    }
+
+    async function loadApprovals() {
+      var box = document.getElementById("approvals");
+      try {
+        var res = await client.workflows.runs.waitingAssignedToMe({ limit: 50 });
+        var items = (res.items || []).filter(function (a) { return a.wait && a.wait.wait_type === "HUMAN"; });
+        if (!items.length) { box.innerHTML = '<div class="skeleton">Nothing waiting — the agent is handling the queue.</div>'; return; }
+        box.innerHTML = items.map(function (a, i) {
+          var p = (a.wait && a.wait.payload) || {};
+          var draft = (p.input_schema && p.input_schema.properties && p.input_schema.properties.final_reply
+            && p.input_schema.properties.final_reply.default) || "";
+          var reason = (p.input_schema && p.input_schema.properties && p.input_schema.properties.summary
+            && p.input_schema.properties.summary.default) || "";
+          return '<div class="item" data-run="' + esc(a.run.id) + '" data-node="' + esc(a.wait.node_id) + '">' +
+            '<div class="mono" style="color:var(--muted);font-size:12px">run ' + esc(String(a.run.id).slice(0, 8)) + '</div>' +
+            (reason ? '<div style="margin:4px 0;color:var(--text-2)">' + esc(reason) + '</div>' : "") +
+            '<textarea rows="3" id="reply-' + i + '">' + esc(draft) + '</textarea>' +
+            '<div class="btns">' +
+              '<button class="act" onclick="approve(' + i + ',true)">Approve & act</button>' +
+              '<button class="ghost" onclick="approve(' + i + ',false)">Reject / keep escalated</button>' +
+            '</div></div>';
+        }).join("");
+      } catch (e) {
+        box.innerHTML = '<div class="skeleton">Approval inbox unavailable (' + esc(e.message || e) + ').</div>';
+      }
+    }
+
+    window.approve = async function (i, ok) {
+      var item = document.querySelectorAll(".approvals .item")[i];
+      if (!item) return;
+      var runId = item.getAttribute("data-run"), nodeId = item.getAttribute("data-node");
+      var reply = (document.getElementById("reply-" + i) || {}).value || "";
+      try {
+        await client.workflows.runs.submitForm(runId, { node_id: nodeId, inputs: { approved: ok, final_reply: reply } });
+        toast(ok ? "Approved — action taken." : "Kept escalated.");
+        await loadApprovals(); await loadTickets(); await loadMetrics();
+      } catch (e) { toast("Submit failed: " + (e.message || e)); }
+    };
+  </script>
+</body>
+</html>
