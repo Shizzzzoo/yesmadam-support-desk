@@ -20,7 +20,8 @@ for read_only in ["bookings", "professionals", "provider_responses"]:
     assert "datastore.record.write" not in tbl[read_only]["permission_ids"], f"{read_only} must be read-only"
 assert "datastore.record.write" in tbl["tickets"]["permission_ids"], "tickets needs write for file_ticket"
 assert any(g["resource_type"] == "function" and g["resource_name"] == "file_ticket"
-           and "function.execute" in g["permission_ids"] for g in grants)
+           and "function.execute" in g["permission_ids"] and "function.read" in g["permission_ids"]
+           for g in grants)
 assert any(g["resource_type"] == "folder" and g["resource_name"] == "/knowledge" for g in grants)
 
 instr = open("agents/concierge/instruction.md").read().lower()

@@ -10,6 +10,6 @@
     { "resource_type": "datastore_table", "resource_name": "professionals", "permission_ids": ["datastore.table.read", "datastore.record.read"] },
     { "resource_type": "datastore_table", "resource_name": "provider_responses", "permission_ids": ["datastore.table.read", "datastore.record.read"] },
     { "resource_type": "folder", "resource_name": "/knowledge", "permission_ids": ["folder.read"] },
-    { "resource_type": "function", "resource_name": "file_ticket", "permission_ids": ["function.execute"] }
+    { "resource_type": "function", "resource_name": "file_ticket", "permission_ids": ["function.read", "function.execute"] }
   ] }
 }
