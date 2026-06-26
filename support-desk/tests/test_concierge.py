@@ -12,7 +12,13 @@ grants = a["permissions"]["grants"]
 tbl = {g["resource_name"]: g for g in grants if g["resource_type"] == "datastore_table"}
 for t in ["bookings", "tickets", "professionals", "provider_responses"]:
     assert t in tbl, f"missing read grant on {t}"
-    assert "datastore.record.write" not in tbl[t]["permission_ids"], f"{t} must be read-only"
+# THE safety invariant: concierge can NEVER write a booking (cannot move money / change a
+# booking). It may write `tickets` (a ticket is only a request — an agent-invoked function
+# runs under the agent's grants, so file_ticket's insert needs this; the engine's gates
+# still decide every refund/booking change downstream).
+for read_only in ["bookings", "professionals", "provider_responses"]:
+    assert "datastore.record.write" not in tbl[read_only]["permission_ids"], f"{read_only} must be read-only"
+assert "datastore.record.write" in tbl["tickets"]["permission_ids"], "tickets needs write for file_ticket"
 assert any(g["resource_type"] == "function" and g["resource_name"] == "file_ticket"
            and "function.execute" in g["permission_ids"] for g in grants)
 assert any(g["resource_type"] == "folder" and g["resource_name"] == "/knowledge" for g in grants)
