@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>YesMadam · Chat</title>
+<!-- SDK is loaded first-party at runtime by the IIFE in the script block below — no CDN, no SRI. -->
+<style>
+  :root{--brand:#e6007e;--brand-deep:#b80064;--blush:#fff6fa;--plum:#2a0e22;--line:#f4dce8;--ink-2:#6e5560}
+  *{box-sizing:border-box} body{margin:0;font-family:"Hanken Grotesk",system-ui,sans-serif;background:var(--blush);color:var(--plum);height:100vh;display:flex;flex-direction:column}
+  header{padding:16px 20px;background:linear-gradient(185deg,#3a0f2c,#2a0e22);color:#fff;font-weight:700}
+  header small{display:block;font-weight:500;font-size:12px;color:#ff9ad0}
+  #thread{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:10px}
+  .msg{max-width:78%;padding:10px 14px;border-radius:14px;font-size:14px;line-height:1.45;box-shadow:0 1px 2px rgba(42,14,34,.06);white-space:pre-wrap}
+  .me{align-self:flex-end;background:var(--brand);color:#fff;border-bottom-right-radius:4px}
+  .bot{align-self:flex-start;background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px}
+  .typing{color:var(--ink-2);font-style:italic;font-size:13px;align-self:flex-start}
+  form{display:flex;gap:8px;padding:14px 16px;border-top:1px solid var(--line);background:#fff}
+  input{flex:1;padding:12px 14px;border:1px solid var(--line);border-radius:12px;font-size:14px}
+  button{padding:12px 18px;border:none;border-radius:12px;background:var(--brand);color:#fff;font-weight:700;cursor:pointer}
+</style></head>
+<body>
+  <header>YesMadam Support<small>Chat with our assistant</small></header>
+  <div id="thread"></div>
+  <form id="f"><input id="i" placeholder="Ask about your booking…" autocomplete="off" />
+    <button type="submit">Send</button></form>
+<script>
+  // First-party SDK loader (identical pattern to the ops-queue app).
+  (function(){
+    var cfg=window.__LEMMA_CONFIG__||{};
+    var base=(cfg.apiUrl||window.location.origin).replace(/\/$/,"");
+    var s=document.createElement("script");
+    s.src=base+"/public/sdk/lemma-client.js";
+    s.onload=boot;
+    s.onerror=function(){add("Couldn't load the assistant. Please refresh.","bot");};
+    document.head.appendChild(s);
+  })();
+
+  const thread=document.getElementById("thread");
+  function add(text,cls){var d=document.createElement("div");d.className="msg "+cls;d.textContent=text;thread.appendChild(d);thread.scrollTop=thread.scrollHeight;return d;}
+  let client=null, convNs=null, conv=null;
+
+  async function boot(){
+    client=new window.LemmaClient.LemmaClient();
+    const state=await client.initialize();
+    if(state.status!=="authenticated"){client.auth.redirectToAuth();return;}
+    convNs=client.conversations();
+    conv=await convNs.createForAgent("concierge",{title:"Customer chat"});
+    add("Hi! I'm the YesMadam assistant. Ask me anything about your booking — running late, reschedule, or a refund.","bot");
+  }
+
+  async function sendMessage(text){
+    if(typeof convNs.sendMessageStream==="function"){
+      const bubble=add("…","bot"); let acc="";
+      const stream=await convNs.sendMessageStream(conv.id,{content:text});
+      for await (const ev of stream){
+        const chunk=(ev&&(ev.delta||ev.content||ev.text||ev.message))||"";
+        if(chunk){acc+=chunk;bubble.textContent=acc;thread.scrollTop=thread.scrollHeight;}
+      }
+      if(!acc) bubble.textContent="(working on it — ask again in a moment)";
+      return;
+    }
+    await convNs.messages.send(conv.id,{content:text});
+    const t=add("…","typing");
+    for(let i=0;i<30;i++){
+      await new Promise(r=>setTimeout(r,1000));
+      const res=await convNs.messages.list(conv.id);
+      const items=(res&&(res.items||res))||[];
+      const last=items.filter(function(m){return m.role==="assistant";}).pop();
+      if(last&&last.content){t.remove();add(last.content,"bot");return;}
+    }
+    t.remove();add("Still working on it — give me a moment and ask again.","bot");
+  }
+
+  document.getElementById("f").addEventListener("submit",async function(e){
+    e.preventDefault();const i=document.getElementById("i");const text=i.value.trim();if(!text)return;
+    i.value="";add(text,"me");
+    try{await sendMessage(text);}catch(err){add("Sorry — something went wrong reaching the assistant. Please try again.","bot");}
+  });
+</script>
+</body></html>

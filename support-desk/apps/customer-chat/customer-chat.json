@@ -1,0 +1,5 @@
+{
+  "name": "customer-chat",
+  "description": "Customer-facing chat: a live conversation with the YesMadam concierge agent. The customer asks questions ('why is my pro late?', 'can I get a refund?'); concierge answers from booking data, asks clarifying questions, files a ticket into the desk engine, and reports the outcome back.",
+  "public_slug": "yesmadam-chat"
+}
