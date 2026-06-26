@@ -3,6 +3,7 @@ import bookings from "./bookings.json";
 import events from "./ticket_events.json";
 import professionals from "./professionals.json";
 import evidence from "./service_evidence.json";
+import providerResponses from "./provider_responses.json";
 
 export const SERVICE_ICON = {
   haircut: "✂️", facial: "🧖", massage: "💆", manicure: "💅", waxing: "🪒",
@@ -30,6 +31,28 @@ export function evidenceFor(bookingId) {
   return evidence.filter((e) => e.booking_id === bookingId);
 }
 
+// ── Provider coordination (the new loop) ──
+// Latest coordination row for a ticket: the desk alerted the assigned pro and is
+// waiting on / has received their reply (late / reschedule / can't make it / on-site),
+// or the 5-minute SLA expired (no_response).
+export function coordinationFor(ticketId) {
+  const rows = providerResponses
+    .filter((r) => r.ticket_id === ticketId)
+    .sort((a, b) => new Date(b.alerted_at) - new Date(a.alerted_at));
+  return rows[0] || null;
+}
+export const PROVIDER_STATUS_LABEL = {
+  awaiting: "Awaiting reply",
+  late: "Running late",
+  reschedule: "Proposed reschedule",
+  on_site: "Reports on-site",
+  cant_make_it: "Can't make it",
+  no_response: "No reply (timed out)",
+  customer_accepted: "Customer accepted",
+  customer_declined: "Customer declined",
+};
+export const SLA_MINUTES = 5;
+
 // ── Headline metrics ──
 function rate() {
   const considered = allTickets.filter((t) => t.status !== "new");
@@ -47,6 +70,9 @@ export const metrics = {
   protected: bookings.filter(
     (b) => (b.start_otp_verified || b.check_in_at || b.status === "in_progress") && b.refund_status !== "full"
   ).length,
+  prosCoordinated: providerResponses.length,
+  awaitingProvider: providerResponses.filter((r) => r.status === "awaiting").length,
+  enRouteLocks: bookings.filter((b) => ["alerted", "en_route"].includes(b.provider_state)).length,
 };
 
 // ── Cases: problematic treatments (the separate history store) ──

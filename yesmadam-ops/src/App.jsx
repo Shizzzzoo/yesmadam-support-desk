@@ -7,6 +7,9 @@ import {
   eventsFor,
   evidenceFor,
   thread,
+  coordinationFor,
+  PROVIDER_STATUS_LABEL,
+  SLA_MINUTES,
   currentUser,
   SERVICE_ICON,
   CATEGORY_LABEL,
@@ -31,6 +34,15 @@ const ago = (iso) => {
 const inr = (n) => `₹${Number(n).toLocaleString("en-IN")}`;
 const initials = (name = "") =>
   name.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase();
+
+const NOW = Date.parse("2026-06-24T17:10:00Z");
+const minutesLeft = (alertedAt) => {
+  const t = Date.parse(alertedAt);
+  if (!t) return null;
+  const left = SLA_MINUTES - (NOW - t) / 60000;
+  return left > 0 ? Math.ceil(left) : 0;
+};
+const PROVIDER_STATE_LABEL = { alerted: "Pro alerted", en_route: "Pro en route", stood_down: "Stood down", idle: "" };
 
 const STATUS_LABEL = {
   auto_resolved: "Auto-resolved",
@@ -154,6 +166,11 @@ function Stats() {
         <div className="v">{metrics.protected}</div>
         <div className="l">Refunds protected</div>
       </div>
+      <div className="stat">
+        <div className="v">{metrics.prosCoordinated}</div>
+        <div className="l">Pros coordinated</div>
+        {metrics.awaitingProvider > 0 && <div className="delta">{metrics.awaitingProvider} awaiting now</div>}
+      </div>
     </div>
   );
 }
@@ -162,6 +179,8 @@ function Stats() {
 function QueueCard({ t, selected, onClick }) {
   const b = t.booking;
   const statusKind = t.status;
+  const pr = coordinationFor(t.id);
+  const locked = b && (b.provider_state === "alerted" || b.provider_state === "en_route");
   return (
     <button className={`scard${selected ? " sel" : ""}`} onClick={onClick}>
       <div className="row1">
@@ -176,6 +195,8 @@ function QueueCard({ t, selected, onClick }) {
       <div className="row3">
         <span className="badge b-channel"><span className="dot" />{t.channel}</span>
         <span className="chip">{CATEGORY_LABEL[t.category] || t.category}</span>
+        {pr && pr.status === "awaiting" && <span className="badge b-lock"><span className="dot" />awaiting pro</span>}
+        {locked && pr && pr.status !== "awaiting" && <span className="badge b-lock"><span className="dot" />🔒 en route</span>}
         {t.urgency === "high" && <span className="badge b-high"><span className="dot" />urgent</span>}
         <span className="pill" style={{ marginLeft: "auto" }}>{ago(t.created_at)}</span>
       </div>
@@ -187,20 +208,20 @@ function QueueCard({ t, selected, onClick }) {
 function transformOf(t) {
   const b = t.booking;
   if (!b) return null;
-  const action = t.agent_decision?.proposed_action;
   const la = b.last_action || "";
-
-  if (action === "assign_replacement" || /Replacement/.test(la)) {
+  // Only show a transform once the action is actually recorded on the booking
+  // (last_action). While we're still coordinating with the pro nothing has changed yet.
+  if (/Replacement/.test(la)) {
     const m = la.match(/Replacement (.+?) assigned(?: \(was (.+?), no-show\))?/);
     const newPro = m?.[1] || b.professional_name;
     const oldPro = m?.[2] || b.previous_professional || "Previous pro";
     return {
       kind: "Professional reassigned",
       before: { k: "Was", v: oldPro, sub: "Marked no-show" },
-      after: { k: "Now", v: newPro, sub: "Replacement en route" },
+      after: { k: "Now", v: newPro, sub: "Replacement assigned" },
     };
   }
-  if (action === "reschedule" || /Rescheduled/.test(la)) {
+  if (/Rescheduled/.test(la)) {
     const m = la.match(/Rescheduled to ([0-9T:+\-.Z]+)/);
     const newTime = m?.[1];
     return {
@@ -209,7 +230,7 @@ function transformOf(t) {
       after: { k: "Now", v: newTime ? fmtTime(newTime) : "Rescheduled", sub: newTime ? fmtDay(newTime) : "Confirmed" },
     };
   }
-  if (action === "refund" && (b.status === "cancelled" || /Cancelled/.test(la))) {
+  if (b.status === "cancelled" || /Cancelled/.test(la)) {
     const m = la.match(/₹([\d.,]+)/);
     return {
       kind: "Cancelled & refunded",
@@ -246,6 +267,9 @@ function BookingCard({ t }) {
           </div>
           <div className="code mono">BOOKING #{b.code}</div>
         </div>
+        {(b.provider_state === "alerted" || b.provider_state === "en_route") && (
+          <span className="badge b-lock" style={{ marginLeft: "auto" }}><span className="dot" />🔒 {PROVIDER_STATE_LABEL[b.provider_state]}</span>
+        )}
       </div>
 
       {xf ? (
@@ -300,6 +324,58 @@ function BookingCard({ t }) {
       {b.last_action && (
         <div className="last mono">↳ {b.last_action}</div>
       )}
+    </div>
+  );
+}
+
+/* ───────────────────────── provider coordination (the new loop) ───────────────────────── */
+function CoordinationPanel({ t }) {
+  const pr = coordinationFor(t.id);
+  if (!pr) return null;
+  const b = t.booking;
+  const awaiting = pr.status === "awaiting";
+  const mins = awaiting ? minutesLeft(pr.alerted_at) : null;
+  const proReply = {
+    awaiting: "⏳ …awaiting reply",
+    late: `"Running late — I'll be there in ${pr.eta_minutes} min."`,
+    on_site: '"I\'m already on site."',
+    reschedule: `"Can I come at ${fmtDateTime(pr.proposed_new_time)} instead?"`,
+    no_response: "(no reply within 5 minutes)",
+    cant_make_it: '"Something came up — I can\'t make it today."',
+  }[pr.status] || pr.status;
+  const outcome = {
+    awaiting: `Customer is being held — we auto-refund in ${mins ?? 0} min if the pro stays silent.`,
+    late: "Booking held with the en-route lock on; customer reassured with the ETA. No cancel, no refund.",
+    on_site: "Booking held (en-route lock); routed to a human with proof-of-service to check a likely false alarm.",
+    reschedule: "Offered the customer the new slot; awaiting their YES / NO.",
+    no_response: "5-min SLA expired → pro stood down → customer made whole automatically (replacement / refund).",
+    cant_make_it: "Pro stood down → replacement assigned, refund as fallback.",
+    customer_declined: "Customer declined the new time → cancelled and refunded.",
+    customer_accepted: "Customer accepted → booking rescheduled.",
+  }[pr.status] || "";
+
+  return (
+    <div>
+      <div className="block-label">Provider coordination</div>
+      <div className="coord">
+        <div className="coord-h">
+          <span className="badge b-lock"><span className="dot" />{PROVIDER_STATE_LABEL[b?.provider_state] || "Coordinating"}</span>
+          <span className="chip">{PROVIDER_STATUS_LABEL[pr.status] || pr.status}</span>
+          {awaiting && <span className="sla mono">⏳ {mins} min left</span>}
+        </div>
+        <div className="thread" style={{ padding: 0, gap: 8, marginTop: 12 }}>
+          <div className="msg to-provider">
+            <div className="mh">Assistant → {pr.professional_name} <span style={{ opacity: 0.7 }}>(pro)</span></div>
+            A client is waiting for their {b?.service} at {b?.address}. Reply: running late · reschedule · can’t make it · on-site.
+            <div className="mchan mono">whatsapp · YesMadam</div>
+          </div>
+          <div className={`msg to-customer${awaiting ? " awaiting" : ""}`}>
+            <div className="mh">{pr.professional_name} →</div>
+            {proReply}
+          </div>
+        </div>
+        <div className="coord-out">↳ {outcome}</div>
+      </div>
     </div>
   );
 }
@@ -378,6 +454,8 @@ function Detail({ t }) {
           {d.reasoning && <div className="reason">{d.reasoning}</div>}
         </div>
       </div>
+
+      <CoordinationPanel t={t} />
 
       <BookingCard t={t} />
 
@@ -570,7 +648,7 @@ function MessagesView({ tickets, selectedId, setSelectedId }) {
 
 /* ───────────────────────── app ───────────────────────── */
 const VIEW_META = {
-  queue: { h1: "Support queue", p: "Every inbound ticket, triaged and resolved by the assistant the moment it lands." },
+  queue: { h1: "Support queue", p: "Every inbound ticket triaged and resolved by the assistant — and when a customer is waiting, the pro is pinged and their reply drives the outcome." },
   cases: { h1: "Cases & disputes", p: "Refunds, no-shows and the messy ones a human needs to look at." },
   providers: { h1: "Providers", p: "Reliability scored from real no-shows and replacements the assistant made." },
   messages: { h1: "Messages", p: "The two-sided thread — what the assistant told the customer and the pro." },
@@ -578,11 +656,14 @@ const VIEW_META = {
 
 export default function App() {
   const [view, setView] = useState("queue");
-  const firstResolved = useMemo(
-    () => allTickets.find((t) => t.booking && t.booking.last_action) || allTickets[0],
+  const firstSelected = useMemo(
+    // open on a live coordination ticket so the provider loop is the first thing shown
+    () => allTickets.find((t) => coordinationFor(t.id)?.status === "awaiting")
+      || allTickets.find((t) => t.booking && t.booking.last_action)
+      || allTickets[0],
     []
   );
-  const [selectedId, setSelectedId] = useState(firstResolved?.id);
+  const [selectedId, setSelectedId] = useState(firstSelected?.id);
 
   const counts = {
     queue: allTickets.length,

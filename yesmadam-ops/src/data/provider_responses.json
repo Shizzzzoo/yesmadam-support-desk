@@ -1,0 +1,44 @@
+[
+  {
+    "id": "e0c11111-0000-4000-8000-000000000029",
+    "created_at": "2026-06-24T17:08:00Z",
+    "updated_at": "2026-06-24T17:08:00Z",
+    "ticket_id": "d0b11111-0000-4000-8000-000000000029",
+    "booking_id": "c0a11111-0000-4000-8000-000000000029",
+    "professional_name": "Pooja Sharma",
+    "status": "awaiting",
+    "eta_minutes": null,
+    "proposed_new_time": null,
+    "alerted_at": "2026-06-24T17:08:00Z",
+    "responded_at": null,
+    "note": null
+  },
+  {
+    "id": "e0c22222-0000-4000-8000-000000000030",
+    "created_at": "2026-06-24T16:50:00Z",
+    "updated_at": "2026-06-24T16:52:00Z",
+    "ticket_id": "d0b22222-0000-4000-8000-000000000030",
+    "booking_id": "c0a22222-0000-4000-8000-000000000030",
+    "professional_name": "Karan Malhotra",
+    "status": "late",
+    "eta_minutes": 15,
+    "proposed_new_time": null,
+    "alerted_at": "2026-06-24T16:50:00Z",
+    "responded_at": "2026-06-24T16:52:00Z",
+    "note": "Pro replied: running late"
+  },
+  {
+    "id": "e0c33333-0000-4000-8000-000000000031",
+    "created_at": "2026-06-24T16:30:00Z",
+    "updated_at": "2026-06-24T16:35:00Z",
+    "ticket_id": "d0b33333-0000-4000-8000-000000000031",
+    "booking_id": "c0a33333-0000-4000-8000-000000000031",
+    "professional_name": "Ritu Verma",
+    "status": "no_response",
+    "eta_minutes": null,
+    "proposed_new_time": null,
+    "alerted_at": "2026-06-24T16:30:00Z",
+    "responded_at": "2026-06-24T16:35:00Z",
+    "note": "SLA expiry -> no_response"
+  }
+]

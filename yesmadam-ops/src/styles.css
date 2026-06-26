@@ -142,6 +142,15 @@ button { font-family: var(--body); cursor: pointer; }
 .b-neutral { color: var(--ink-2); background: #f6eef2; }
 .b-urgent, .b-high { color: var(--danger); background: var(--danger-wash); }
 .b-channel { color: var(--brand-deep); background: var(--brand-wash); text-transform: capitalize; }
+.b-lock { color: var(--warn); background: var(--warn-wash); }
+
+/* ── provider coordination panel ── */
+.coord { background: linear-gradient(160deg, #fff8ef 0%, #ffffff 60%); border: 1px solid #f3cd92; border-radius: var(--r-lg); padding: var(--s5); box-shadow: var(--shadow-sm); }
+.coord-h { display: flex; align-items: center; gap: var(--s2); flex-wrap: wrap; }
+.coord-h .sla { margin-left: auto; color: var(--warn); font-weight: 700; font-size: 13px; background: var(--warn-wash); border: 1px solid #f3cd92; padding: 3px 10px; border-radius: 99px; }
+.coord .msg { max-width: 88%; }
+.coord .msg.awaiting { border-style: dashed; color: var(--warn); font-style: italic; }
+.coord-out { margin-top: var(--s4); padding-top: var(--s3); border-top: 1px dashed var(--line-strong); color: var(--brand-deep); font-size: 13px; }
 
 .chip { font-family: var(--mono); font-size: 11px; color: var(--ink-2); background: #f7eef3; border: 1px solid var(--line); padding: 2px 8px; border-radius: 8px; }
 

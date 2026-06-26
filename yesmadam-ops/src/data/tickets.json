@@ -14,12 +14,12 @@
     "agent_decision": {
       "urgency": "high",
       "category": "no_show",
-      "reasoning": "The message \u2014 \"My stylist never showed up and I have been waiting 30 minutes! Nobody came for my haircut\" \u2014 matches the rubric's no_show signals verbatim (pro never turned up, 30-minute wait, no one arrived). Per the support policy's no-show rules, a pro who fails to arrive entitles the customer to a replacement OR a full refund (their choice); replacement is preferred when an active pro exists in the same area \u2014 Karan Malhotra is active for haircut in Koramangala, so this booking qualifies. No-show urgency is high.",
+      "reasoning": "The message — \"My stylist never showed up and I have been waiting 30 minutes! Nobody came for my haircut\" — matches the rubric's no_show signals verbatim (pro never turned up, 30-minute wait, no one arrived). Per the support policy's no-show rules, a pro who fails to arrive entitles the customer to a replacement OR a full refund (their choice); replacement is preferred when an active pro exists in the same area — Karan Malhotra is active for haircut in Koramangala, so this booking qualifies. No-show urgency is high.",
       "booking_id": "48d467a0-607a-44c5-8ed5-aa91ccedb88b",
       "confidence": 0.9,
       "proposed_action": "assign_replacement"
     },
-    "draft_reply": "Hi Vivaan, I'm really sorry your stylist Pooja didn't arrive for your haircut in Koramangala today. I'm arranging a replacement professional \u2014 Karan Malhotra, our other active haircut pro in Koramangala \u2014 to reach you as soon as possible. If you'd rather cancel and get your money back instead, I'll issue a full refund of \u20b9499 straight away. Just let me know which you'd prefer, and sorry again for the wait.",
+    "draft_reply": "Hi Vivaan, I'm really sorry your stylist Pooja didn't arrive for your haircut in Koramangala today. I'm arranging a replacement professional — Karan Malhotra, our other active haircut pro in Koramangala — to reach you as soon as possible. If you'd rather cancel and get your money back instead, I'll issue a full refund of ₹499 straight away. Just let me know which you'd prefer, and sorry again for the wait.",
     "confidence": 0.9,
     "run_id": null
   },
@@ -54,7 +54,7 @@
     "number": 25,
     "customer_name": "Saanvi Joshi",
     "channel": "whatsapp",
-    "raw_message": "Hi, just confirming the timing for my waxing appointment on the 30th \u2014 what time is it again?",
+    "raw_message": "Hi, just confirming the timing for my waxing appointment on the 30th — what time is it again?",
     "booking_id": "81c86bd1-dc8b-4e7a-b2f7-693e487a4d74",
     "category": "where_is_pro",
     "urgency": "low",
@@ -67,7 +67,7 @@
       "confidence": 0.95,
       "proposed_action": "none"
     },
-    "draft_reply": "Hi Saanvi! Your waxing appointment with Meera Pillai is confirmed for Tuesday, 30 June at 1:00 PM IST in Marathahalli, Bengaluru. See you then! \ud83d\udc87\u200d\u2640\ufe0f",
+    "draft_reply": "Hi Saanvi! Your waxing appointment with Meera Pillai is confirmed for Tuesday, 30 June at 1:00 PM IST in Marathahalli, Bengaluru. See you then! 💇‍♀️",
     "confidence": 0.95,
     "run_id": null
   },
@@ -86,12 +86,12 @@
     "agent_decision": {
       "urgency": "normal",
       "category": "cancel_refund",
-      "reasoning": "Customer explicitly asks to cancel the massage and refund \u20b9999. The booking is already in progress (start OTP verified, ~2h past scheduled start at 12:30 UTC, ticket at 14:31 UTC). Per the cancellation policy, no refund applies inside 1 hour of start \u2014 and a started service is even further past that window \u2014 so refund_amount is 0.",
+      "reasoning": "Customer explicitly asks to cancel the massage and refund ₹999. The booking is already in progress (start OTP verified, ~2h past scheduled start at 12:30 UTC, ticket at 14:31 UTC). Per the cancellation policy, no refund applies inside 1 hour of start — and a started service is even further past that window — so refund_amount is 0.",
       "booking_id": "a374cbcd-7652-4c03-8082-fcde0c31ec71",
       "confidence": 0.75,
       "proposed_action": "refund"
     },
-    "draft_reply": "Hi Rohan, I've gone ahead and cancelled your massage booking (code 15) with Karan Malhotra. Since the slot started at 12:30 PM and the service is already in progress, our cancellation policy doesn't allow a refund in this case \u2014 once we're inside an hour of the start time the booking is non-refundable. I'm flagging this for a human reviewer so they can confirm the right outcome; you'll hear back from them shortly. Sorry for the hassle.",
+    "draft_reply": "Hi Rohan, I've gone ahead and cancelled your massage booking (code 15) with Karan Malhotra. Since the slot started at 12:30 PM and the service is already in progress, our cancellation policy doesn't allow a refund in this case — once we're inside an hour of the start time the booking is non-refundable. I'm flagging this for a human reviewer so they can confirm the right outcome; you'll hear back from them shortly. Sorry for the hassle.",
     "confidence": 0.75,
     "run_id": null
   },
@@ -110,12 +110,12 @@
     "agent_decision": {
       "urgency": "normal",
       "category": "where_is_pro",
-      "reasoning": "Customer explicitly asks \"where is my massage therapist?\" \u2014 a textbook where_is_pro inquiry. Booking is scheduled for 28 June (4 days out, well before the 15-minute past-start no_show trigger), so per the 'Where is my professional' rule this is an informational reply naming the assigned professional; no booking change needed.",
+      "reasoning": "Customer explicitly asks \"where is my massage therapist?\" — a textbook where_is_pro inquiry. Booking is scheduled for 28 June (4 days out, well before the 15-minute past-start no_show trigger), so per the 'Where is my professional' rule this is an informational reply naming the assigned professional; no booking change needed.",
       "booking_id": "b0954bd9-75d9-4b20-a88d-c05c7648ab8a",
       "confidence": 0.95,
       "proposed_action": "none"
     },
-    "draft_reply": "Hi Vihaan \u2014 your massage is confirmed for 28 June at 7:00 PM IST at your Domlur address, with Anjali Rao as your assigned therapist. She's scheduled and we'll share her live ETA as the slot approaches. Anything else I can help with?",
+    "draft_reply": "Hi Vihaan — your massage is confirmed for 28 June at 7:00 PM IST at your Domlur address, with Anjali Rao as your assigned therapist. She's scheduled and we'll share her live ETA as the slot approaches. Anything else I can help with?",
     "confidence": 0.95,
     "run_id": null
   },
@@ -139,7 +139,7 @@
       "confidence": 0.95,
       "proposed_action": "none"
     },
-    "draft_reply": "Hi Priya \ud83d\udc4b thanks for reaching out! I'd love to help \u2014 but support desk can only act on bookings you already have with us, and I don't see any current bookings under your name. For a brand-new facial appointment tomorrow afternoon, please book directly through the YesMadam app (or tell me your preferred time and area here and I'll pass it to our bookings team to set one up for you). \ud83d\udc9b",
+    "draft_reply": "Hi Priya 👋 thanks for reaching out! I'd love to help — but support desk can only act on bookings you already have with us, and I don't see any current bookings under your name. For a brand-new facial appointment tomorrow afternoon, please book directly through the YesMadam app (or tell me your preferred time and area here and I'll pass it to our bookings team to set one up for you). 💛",
     "confidence": 0.95,
     "run_id": null
   },
@@ -158,12 +158,12 @@
     "agent_decision": {
       "urgency": "low",
       "category": "other",
-      "reasoning": "Per the support policy, anything that is not clearly one of the four core categories (reschedule, cancel_refund, no_show, where_is_pro) is classified as `other` and escalated to a human. This ticket is a single, clear sales/pricing inquiry about bridal makeup packages \u2014 not mixed or unclear \u2014 so `other` is the right bucket rather than `ambiguous`. Urgency `low` per the policy's \"general questions\" guidance.",
+      "reasoning": "Per the support policy, anything that is not clearly one of the four core categories (reschedule, cancel_refund, no_show, where_is_pro) is classified as `other` and escalated to a human. This ticket is a single, clear sales/pricing inquiry about bridal makeup packages — not mixed or unclear — so `other` is the right bucket rather than `ambiguous`. Urgency `low` per the policy's \"general questions\" guidance.",
       "booking_id": "ed419ce3-9b74-4ee7-9fa3-84a751b39511",
       "confidence": 0.92,
       "proposed_action": "none"
     },
-    "draft_reply": "Hi Diya, thanks for asking! Yes \u2014 we do offer bridal makeup packages for weddings at home. Pricing depends on a few details (bridal party size, your location, trial sessions, etc.), so I'm routing your note to our bridal specialist who'll get back to you within one business day with the package options and exact pricing. Looking forward to helping make your wedding prep smooth! For reference, your existing facial with Ritu Verma on June 28 stays confirmed as is \u2014 let us know if you'd like to add anything there too.",
+    "draft_reply": "Hi Diya, thanks for asking! Yes — we do offer bridal makeup packages for weddings at home. Pricing depends on a few details (bridal party size, your location, trial sessions, etc.), so I'm routing your note to our bridal specialist who'll get back to you within one business day with the package options and exact pricing. Looking forward to helping make your wedding prep smooth! For reference, your existing facial with Ritu Verma on June 28 stays confirmed as is — let us know if you'd like to add anything there too.",
     "confidence": 0.92,
     "run_id": null
   },
@@ -182,12 +182,12 @@
     "agent_decision": {
       "urgency": "normal",
       "category": "ambiguous",
-      "reasoning": "The message mixes three different asks \u2014 refund, reschedule, and a discount voucher \u2014 plus a complaint about the professional's behaviour last time. Per the support policy, any ticket that mixes multiple issues or asks for something off-policy (a goodwill voucher is not a recognised category) must be classified as ambiguous and handed to a human.",
+      "reasoning": "The message mixes three different asks — refund, reschedule, and a discount voucher — plus a complaint about the professional's behaviour last time. Per the support policy, any ticket that mixes multiple issues or asks for something off-policy (a goodwill voucher is not a recognised category) must be classified as ambiguous and handed to a human.",
       "booking_id": "6fe5068c-f144-4c2e-8013-fbcbaaa67f19",
       "confidence": 0.92,
       "proposed_action": "none"
     },
-    "draft_reply": "Hi Aarav \u2014 thanks for getting in touch. I can see your haircut booking with Pooja Sharma on 28 June at 10:30 AM in Koramangala. Because your note pulls together a few different concerns \u2014 the experience last time, a refund, a reschedule, and a voucher \u2014 I've sent it across to our support team for a careful look; they'll come back to you shortly with a clear way forward. Apologies for the rough experience.",
+    "draft_reply": "Hi Aarav — thanks for getting in touch. I can see your haircut booking with Pooja Sharma on 28 June at 10:30 AM in Koramangala. Because your note pulls together a few different concerns — the experience last time, a refund, a reschedule, and a voucher — I've sent it across to our support team for a careful look; they'll come back to you shortly with a clear way forward. Apologies for the rough experience.",
     "confidence": 0.92,
     "run_id": null
   },
@@ -206,12 +206,12 @@
     "agent_decision": {
       "urgency": "normal",
       "category": "cancel_refund",
-      "reasoning": "Customer (Aditya Bose) explicitly requested cancellation and a full refund for his massage on the 28th. The matching booking (#10, Anjali Rao, \u20b92,499) is scheduled for 2026-06-28 12:00 UTC, ~94 hours from the ticket \u2014 well outside the 6-hour cutoff, so the policy grants a full \u20b92,499 refund. Because the refundable amount exceeds the \u20b91,500 auto-approval cap, the ticket must be escalated to a human for final approval (per the hard gates in /knowledge/support-policy.md).",
+      "reasoning": "Customer (Aditya Bose) explicitly requested cancellation and a full refund for his massage on the 28th. The matching booking (#10, Anjali Rao, ₹2,499) is scheduled for 2026-06-28 12:00 UTC, ~94 hours from the ticket — well outside the 6-hour cutoff, so the policy grants a full ₹2,499 refund. Because the refundable amount exceeds the ₹1,500 auto-approval cap, the ticket must be escalated to a human for final approval (per the hard gates in /knowledge/support-policy.md).",
       "booking_id": "3442fbd7-a1e9-4ff5-9246-ab999a9a8e90",
       "confidence": 0.95,
       "proposed_action": "refund"
     },
-    "draft_reply": "Hi Aditya, thanks for reaching out. I've noted your cancellation for the massage with Anjali Rao on 28 June at 12:00 PM (booking #10). Since the request is well before the 6-hour cutoff, you're eligible for a full refund of \u20b92,499. Because this amount sits above our auto-approval threshold, I've routed it to a teammate for fast confirmation \u2014 you should see the refund in your account shortly. Apologies for the brief wait. \u2014 YesMadam Support",
+    "draft_reply": "Hi Aditya, thanks for reaching out. I've noted your cancellation for the massage with Anjali Rao on 28 June at 12:00 PM (booking #10). Since the request is well before the 6-hour cutoff, you're eligible for a full refund of ₹2,499. Because this amount sits above our auto-approval threshold, I've routed it to a teammate for fast confirmation — you should see the refund in your account shortly. Apologies for the brief wait. — YesMadam Support",
     "confidence": 0.95,
     "run_id": null
   },
@@ -222,7 +222,7 @@
     "number": 14,
     "customer_name": "Kabir Singh",
     "channel": "whatsapp",
-    "raw_message": "I want to cancel my massage and get a full refund \u2014 something urgent came up.",
+    "raw_message": "I want to cancel my massage and get a full refund — something urgent came up.",
     "booking_id": "5eb84190-7c0f-4e81-a563-bbf28ff9a546",
     "category": "cancel_refund",
     "urgency": "normal",
@@ -230,12 +230,12 @@
     "agent_decision": {
       "urgency": "normal",
       "category": "cancel_refund",
-      "reasoning": "Per the cancellation policy, a booking cancelled more than 6 hours before the slot receives a full refund. Kabir's massage with Anjali Rao is scheduled 2026-06-27 14:30 UTC, and the ticket arrived ~72 hours ahead, so a full \u20b91,999 refund applies. Because \u20b91,999 exceeds the \u20b91,500 auto-approval cap, the workflow will route this to a human for sign-off.",
+      "reasoning": "Per the cancellation policy, a booking cancelled more than 6 hours before the slot receives a full refund. Kabir's massage with Anjali Rao is scheduled 2026-06-27 14:30 UTC, and the ticket arrived ~72 hours ahead, so a full ₹1,999 refund applies. Because ₹1,999 exceeds the ₹1,500 auto-approval cap, the workflow will route this to a human for sign-off.",
       "booking_id": "5eb84190-7c0f-4e81-a563-bbf28ff9a546",
       "confidence": 0.92,
       "proposed_action": "refund"
     },
-    "draft_reply": "Hi Kabir, I'm sorry your plans changed. Per our policy, your massage with Anjali Rao on 27 June is well outside the 6-hour window, so it qualifies for a full \u20b91,999 refund. Refunds above \u20b91,500 need a quick human sign-off \u2014 I've passed it to the team for fast approval, and you'll see the refund credited shortly. I'll keep you posted.",
+    "draft_reply": "Hi Kabir, I'm sorry your plans changed. Per our policy, your massage with Anjali Rao on 27 June is well outside the 6-hour window, so it qualifies for a full ₹1,999 refund. Refunds above ₹1,500 need a quick human sign-off — I've passed it to the team for fast approval, and you'll see the refund credited shortly. I'll keep you posted.",
     "confidence": 0.92,
     "run_id": null
   },
@@ -254,12 +254,12 @@
     "agent_decision": {
       "urgency": "high",
       "category": "no_show",
-      "reasoning": "Customer message (\"Nobody arrived for my facial appointment and it has been over 25 minutes\") matches the no_show policy exactly: professional did not arrive within 15 minutes of the slot, customer is stranded \u2192 high-urgency no_show. One booking matches on customer_name and service (facial with Ritu Verma, \u20b91,299). Note: the booking's scheduled_at shows 2026-06-27 (~3 days out from the ticket at 2026-06-24), which is a scheduling-data anomaly given the customer's \"stranded now\" framing \u2014 flagging for human verification. Per policy, a no_show entitles the customer to a replacement OR full refund; proposing replacement since customer is currently waiting.",
+      "reasoning": "Customer message (\"Nobody arrived for my facial appointment and it has been over 25 minutes\") matches the no_show policy exactly: professional did not arrive within 15 minutes of the slot, customer is stranded → high-urgency no_show. One booking matches on customer_name and service (facial with Ritu Verma, ₹1,299). Note: the booking's scheduled_at shows 2026-06-27 (~3 days out from the ticket at 2026-06-24), which is a scheduling-data anomaly given the customer's \"stranded now\" framing — flagging for human verification. Per policy, a no_show entitles the customer to a replacement OR full refund; proposing replacement since customer is currently waiting.",
       "booking_id": "c8079cf2-0d1d-4955-af0a-29315eae1376",
       "confidence": 0.85,
       "proposed_action": "assign_replacement"
     },
-    "draft_reply": "I'm sorry your facial appointment with Ritu Verma didn't go as planned. Since the professional hasn't arrived 25+ minutes past the slot, I'm arranging a replacement professional to reach your BTM Layout address as quickly as possible. If you'd prefer a full refund of \u20b91,299 instead, just reply and I'll process it right away.",
+    "draft_reply": "I'm sorry your facial appointment with Ritu Verma didn't go as planned. Since the professional hasn't arrived 25+ minutes past the slot, I'm arranging a replacement professional to reach your BTM Layout address as quickly as possible. If you'd prefer a full refund of ₹1,299 instead, just reply and I'll process it right away.",
     "confidence": 0.85,
     "run_id": null
   },
@@ -278,12 +278,12 @@
     "agent_decision": {
       "urgency": "normal",
       "category": "cancel_refund",
-      "reasoning": "Customer explicitly asks to cancel and refund her manicure on the 27th. Her booking is scheduled for 2026-06-27 06:30 UTC, ~64 hours from ticket creation, well outside the 6-hour cutoff \u2014 so per the cancellation policy she is owed a full refund of the full \u20b9899 amount.",
+      "reasoning": "Customer explicitly asks to cancel and refund her manicure on the 27th. Her booking is scheduled for 2026-06-27 06:30 UTC, ~64 hours from ticket creation, well outside the 6-hour cutoff — so per the cancellation policy she is owed a full refund of the full ₹899 amount.",
       "booking_id": "0186fb98-ca61-471f-b4a9-4b52fa4d04d2",
       "confidence": 0.95,
       "proposed_action": "refund"
     },
-    "draft_reply": "Hi Anika, I've cancelled your manicure with Neha Gupta on the 27th and issued a full refund of \u20b9899 to your original payment method \u2014 it should reflect within a few business days. Sorry for the hassle; we'd love to have you rebook whenever suits you.",
+    "draft_reply": "Hi Anika, I've cancelled your manicure with Neha Gupta on the 27th and issued a full refund of ₹899 to your original payment method — it should reflect within a few business days. Sorry for the hassle; we'd love to have you rebook whenever suits you.",
     "confidence": 0.95,
     "run_id": null
   },
@@ -302,12 +302,12 @@
     "agent_decision": {
       "urgency": "normal",
       "category": "cancel_refund",
-      "reasoning": "Customer Ananya Iyer explicitly requests cancellation of her manicure on 29th June and asks for a refund. The booking (code 6) with Neha Gupta is scheduled for 2026-06-29 05:30 UTC, and the ticket was created 2026-06-24 \u2014 well more than 6 hours before start \u2014 so per the cancellation policy a full refund applies. Amount \u20b9799 is at or below the \u20b91,500 auto-approval cap.",
+      "reasoning": "Customer Ananya Iyer explicitly requests cancellation of her manicure on 29th June and asks for a refund. The booking (code 6) with Neha Gupta is scheduled for 2026-06-29 05:30 UTC, and the ticket was created 2026-06-24 — well more than 6 hours before start — so per the cancellation policy a full refund applies. Amount ₹799 is at or below the ₹1,500 auto-approval cap.",
       "booking_id": "ce70daa2-7da1-42f1-9822-26993311f223",
       "confidence": 0.95,
       "proposed_action": "refund"
     },
-    "draft_reply": "Hi Ananya, I've cancelled your manicure with Neha Gupta on 29th June and issued a full refund of \u20b9799 to your original payment method \u2014 sorry your plans changed. You'll see the amount back in your account within a few business days. Take care!",
+    "draft_reply": "Hi Ananya, I've cancelled your manicure with Neha Gupta on 29th June and issued a full refund of ₹799 to your original payment method — sorry your plans changed. You'll see the amount back in your account within a few business days. Take care!",
     "confidence": 0.95,
     "run_id": null
   },
@@ -331,7 +331,7 @@
       "confidence": 0.95,
       "proposed_action": "reschedule"
     },
-    "draft_reply": "Hi Reyansh \u2014 I've rescheduled your haircut with Karan Malhotra to June 29 at 12:00 PM at no charge. You'll get a confirmation shortly!",
+    "draft_reply": "Hi Reyansh — I've rescheduled your haircut with Karan Malhotra to June 29 at 12:00 PM at no charge. You'll get a confirmation shortly!",
     "confidence": 0.95,
     "run_id": null
   },
@@ -379,7 +379,7 @@
       "confidence": 0.93,
       "proposed_action": "reschedule"
     },
-    "draft_reply": "Hi Diya! I've rescheduled your facial with Ritu Verma to 8:30 PM on 28 June. You'll get a reminder on the day \u2014 see you then!",
+    "draft_reply": "Hi Diya! I've rescheduled your facial with Ritu Verma to 8:30 PM on 28 June. You'll get a reminder on the day — see you then!",
     "confidence": 0.93,
     "run_id": null
   },
@@ -403,8 +403,100 @@
       "confidence": 0.97,
       "proposed_action": "reschedule"
     },
-    "draft_reply": "Hi Aarav \u2014 I've rescheduled your haircut on 28 June from 4:00 PM to 6:00 PM IST. Your professional, Pooja Sharma, will arrive at the new time. No charge for the change since it's well ahead of your slot.",
+    "draft_reply": "Hi Aarav — I've rescheduled your haircut on 28 June from 4:00 PM to 6:00 PM IST. Your professional, Pooja Sharma, will arrive at the new time. No charge for the change since it's well ahead of your slot.",
     "confidence": 0.97,
     "run_id": null
+  },
+  {
+    "id": "d0b11111-0000-4000-8000-000000000029",
+    "created_at": "2026-06-24T17:08:00Z",
+    "updated_at": "2026-06-24T17:08:30Z",
+    "number": 29,
+    "customer_name": "Aanya Verma",
+    "channel": "whatsapp",
+    "raw_message": "Nobody has arrived for my haircut and I've been waiting 15 minutes. Where is she??",
+    "booking_id": "c0a11111-0000-4000-8000-000000000029",
+    "category": "no_show",
+    "urgency": "high",
+    "status": "triaged",
+    "agent_decision": {
+      "category": "no_show",
+      "urgency": "high",
+      "confidence": 0.9,
+      "booking_id": "c0a11111-0000-4000-8000-000000000029",
+      "proposed_action": "assign_replacement",
+      "reasoning": "Customer-waiting no_show on a scheduled booking with an assigned pro — the desk alerts the professional and waits for their reply (run late / reschedule / can't make it) before resolving, per the provider-coordination policy."
+    },
+    "draft_reply": "Thanks for letting us know, Aanya. We've messaged your professional Pooja Sharma from YesMadam's side and asked them to confirm. Please hold ~5 minutes while they respond — if we don't hear back, we'll refund you automatically. You won't need to chase this.",
+    "confidence": 0.9
+  },
+  {
+    "id": "d0b22222-0000-4000-8000-000000000030",
+    "created_at": "2026-06-24T16:48:00Z",
+    "updated_at": "2026-06-24T16:52:00Z",
+    "number": 30,
+    "customer_name": "Karthik Iyer",
+    "channel": "app_chat",
+    "raw_message": "Where is my massage therapist? It's already past my appointment time.",
+    "booking_id": "c0a22222-0000-4000-8000-000000000030",
+    "category": "no_show",
+    "urgency": "high",
+    "status": "auto_resolved",
+    "agent_decision": {
+      "category": "no_show",
+      "urgency": "high",
+      "confidence": 0.92,
+      "booking_id": "c0a22222-0000-4000-8000-000000000030",
+      "proposed_action": "assign_replacement",
+      "reasoning": "Customer waiting; pro alerted and replied 'running late, 15 min'. Booking held with an en-route lock and the customer reassured — no cancel/refund fired."
+    },
+    "draft_reply": "Good news, Karthik — Karan Malhotra is on the way and should reach you in about 15 minutes. Thanks for your patience! We'll keep an eye on it.",
+    "confidence": 0.92
+  },
+  {
+    "id": "d0b33333-0000-4000-8000-000000000031",
+    "created_at": "2026-06-24T16:28:00Z",
+    "updated_at": "2026-06-24T16:36:00Z",
+    "number": 31,
+    "customer_name": "Nisha Rao",
+    "channel": "whatsapp",
+    "raw_message": "My facial appointment — nobody came at all. Very disappointing.",
+    "booking_id": "c0a33333-0000-4000-8000-000000000031",
+    "category": "no_show",
+    "urgency": "high",
+    "status": "auto_resolved",
+    "agent_decision": {
+      "category": "no_show",
+      "urgency": "high",
+      "confidence": 0.9,
+      "booking_id": "c0a33333-0000-4000-8000-000000000031",
+      "proposed_action": "assign_replacement",
+      "reasoning": "Pro was alerted but did not respond within the 5-minute SLA. The desk stood the pro down and made the customer whole — a replacement (Meera Pillai) was assigned automatically."
+    },
+    "draft_reply": "Nisha, we're sorry — we couldn't confirm your original professional in time, so we've arranged a replacement, Meera Pillai, to cover your facial. Apologies for the wait.",
+    "confidence": 0.9
+  },
+  {
+    "id": "d0b44444-0000-4000-8000-000000000032",
+    "created_at": "2026-06-24T16:55:00Z",
+    "updated_at": "2026-06-24T16:55:30Z",
+    "number": 32,
+    "customer_name": "Karthik Iyer",
+    "channel": "whatsapp",
+    "raw_message": "Actually never mind, just cancel the whole thing and refund me please.",
+    "booking_id": "c0a22222-0000-4000-8000-000000000030",
+    "category": "cancel_refund",
+    "urgency": "normal",
+    "status": "waiting_approval",
+    "agent_decision": {
+      "category": "cancel_refund",
+      "urgency": "normal",
+      "confidence": 0.95,
+      "booking_id": "c0a22222-0000-4000-8000-000000000030",
+      "proposed_action": "refund",
+      "reasoning": "Refund requested, ₹1,299 (under the ₹1,500 auto cap) — would normally auto-refund. BUT the booking is en-route (the pro is on the way), so the cross-ticket refund lock blocked the auto-refund and parked it for a human to avoid cancelling out from under a committed pro."
+    },
+    "draft_reply": "Thanks Karthik — I've flagged this for a team member. Since your professional is already on the way, we want to confirm with you before cancelling. One moment.",
+    "confidence": 0.95
   }
 ]

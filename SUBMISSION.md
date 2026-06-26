@@ -1,7 +1,8 @@
 # YesMadam Support Desk — an agent that *runs* the support queue
 
 **Ship to Get Hired — Gappy AI Hackathon · built on the Lemma SDK**
-Live pod: https://support-desk-ops.apps.lemma.work
+Live operator app (in-pod): https://support-desk-ops.apps.lemma.work
+Live demo UI (Vercel): https://yesmadam-ops.vercel.app
 
 ---
 
@@ -70,6 +71,19 @@ between "does the work" and "talks about the work."
   work was done. Refunds are also prepaid-aware: money only moves when the booking was
   prepaid.
 
+- **Provider coordination — the two-sided loop (the second standout).** A no-show or
+  "where's my pro" means a customer is *physically waiting*, so the desk doesn't just
+  refund — it **proactively pings the assigned professional** ("a client is waiting")
+  and lets their reply drive the outcome: *running late* (ETA reassures the customer, the
+  booking is **held** under an **en-route lock**), *reschedule* (offer the customer a new
+  slot), *can't make it* (replacement, refund fallback), or *on-site* (route to a human as
+  a likely false alarm). If the pro stays silent past a **5-minute SLA**, the customer is
+  **auto-refunded/replaced** — they never chase it. Crucially, the en-route lock is a
+  **cross-ticket guard**: a separate "just cancel and refund me" ticket on a booking whose
+  pro is already on the way is **blocked** and parked for a human, so a refund can never
+  fire out from under a committed professional. The whole loop runs on Functions +
+  Workflows + a time Schedule — no agent at all once the alert is sent — so it's reliable.
+
 ## Execution & proof (live, on the cloud)
 
 Seeded with realistic data, the desk ran itself end-to-end:
@@ -92,12 +106,13 @@ row (with the 🛡 proof-of-service panel), an approval inbox, and an auto-resol
 
 | Primitive | How we use it |
 |---|---|
-| **Tables** (shared) | `bookings` (the row the agent mutates), `tickets` (the queue), `ticket_events` (audit), `professionals`, `service_evidence` (proof-of-service) |
+| **Tables** (shared) | `bookings` (the row the agent mutates, incl. the `provider_state` en-route lock), `tickets` (the queue), `ticket_events` (audit), `professionals`, `service_evidence` (proof-of-service), `provider_responses` (the coordination loop) |
 | **Files** (built-in RAG) | `/knowledge/support-policy.md` — the agent retrieves refund/reschedule/no-show + dispute rules |
-| **Functions** (Python) | `apply_triage`, `verify_service` (deterministic anti-fraud), `execute_resolution` (the coordinated booking mutation + resolve + audit) |
+| **Functions** (Python) | `apply_triage`, `verify_service` (deterministic anti-fraud), `execute_resolution` (booking mutation + resolve + audit), plus the coordination set: `alert_provider`, `notify_provider`, `read_response`, `commit_en_route`, `offer_reschedule`, `apply_reschedule`, `stand_down`, `provider_stand_notice`, `sweep_provider_sla` |
 | **Agent** (POD toolset) | `triage` — read-only judgment returning a rich structured decision the workflow routes on |
-| **Workflow** (AGENT/FUNCTION/DECISION/FORM) | `handle_ticket` — triage → verify → structural+anti-fraud gate → auto-action OR human-approval form |
-| **Schedule** (DATASTORE trigger) | new `tickets` row → `handle_ticket` |
+| **Workflows** (AGENT/FUNCTION/DECISION/FORM) | `handle_ticket` (triage → verify → structural+anti-fraud+en-route gate → auto-action / alert-pro / human form), `provider_reply` (routes the pro's reply), `sweep_sla` (cron SLA sweep) |
+| **Schedules** | DATASTORE: new `tickets` → `handle_ticket`, `provider_responses` UPDATE → `provider_reply`; **TIME (cron)**: every minute → `sweep_sla` (the 5-min SLA) |
+| **Connector** | `workspace-gmail` — customer + provider email notifications |
 | **App** (single-file HTML, live) | the operator queue — the product humans live in |
 
 ## What's real vs. what's an integration step (honest, and the hiring story)
@@ -113,9 +128,24 @@ and it's the hiring pitch.
 
 ## 90-second demo script
 
-1. **0–15s** — state the problem; open the queue showing tickets the agent already handled.
-2. **15–45s** — open a reschedule/refund ticket: show the agent's decision, then the
-   **booking row that changed** + the audit trail. "No human touched this."
-3. **45–70s** — open the **sneaky-cancel** ticket: the booking shows 🛡 proof of service;
-   the refund is **blocked** and waiting in the dispute inbox with the evidence.
-4. **70–90s** — the metric banner: auto-resolved vs. escalated. Close on the one line.
+> Run it on the live demo UI (`yesmadam-ops.vercel.app`) — it opens on the live
+> coordination ticket. Drop to the in-pod app for the booking-row mutations if you want.
+
+1. **0–12s — the problem.** "A customer is waiting at home and the pro hasn't shown.
+   Today an ops agent juggles 4–5 lookups per ticket, hundreds a day." Open the queue.
+2. **12–35s — pro pinged → running late.** Open the **no-show** ticket: the assistant
+   classified it and **messaged the assigned pro** ("client waiting"). Show the Provider
+   Coordination panel — the pro replied *"running late, 15 min"*, the booking is **held
+   under the en-route lock**, and the customer got an automatic ETA reassurance. *No
+   refund, no cancel — the appointment is saved.*
+3. **35–55s — pro silent → auto-refund/replace.** Open the ticket where the pro **never
+   replied**: the **5-minute SLA expired**, the pro was stood down, and the customer was
+   **made whole automatically** (replacement assigned) — they never had to chase it.
+4. **55–72s — the race guard (the kicker).** Open the **"just cancel and refund me"**
+   ticket on a booking whose pro is already *en route*. ₹1,299 is under the auto-refund
+   cap, so it *would* have refunded — but the **en-route lock blocked it** and parked it
+   for a human, so we never cancel out from under a committed pro. (Same mechanism that
+   blocks the **sneaky-cancel** on a service-proven booking — the 🛡 anti-fraud beat.)
+5. **72–90s — the proof.** The metric banner: auto-resolution rate, pros coordinated,
+   refunds protected. Close on the one line — *"it runs the queue; humans only touch the
+   hard cases."*
