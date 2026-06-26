@@ -1,0 +1,10 @@
+{
+  "name": "file_ticket",
+  "description": "Files a customer's (disambiguated) request as a new tickets row, which fires the handle_ticket engine to triage and resolve it within the existing gates. Used by the concierge agent to hand off — concierge never acts on bookings itself.",
+  "type": "API",
+  "code": { "$file": "code.py" },
+  "permissions": { "grants": [
+    { "resource_type": "datastore_table", "resource_name": "tickets", "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] },
+    { "resource_type": "datastore_table", "resource_name": "bookings", "permission_ids": ["datastore.table.read", "datastore.record.read"] }
+  ] }
+}
