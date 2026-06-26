@@ -2,13 +2,11 @@
 #output_type_name: NotifyProviderResult
 #function_name: notify_provider
 
+# The "client is waiting" alert is recorded in-pod (ticket_events) — reliable, no
+# external account. The delivery channel is pluggable: swap this for an API-key
+# connector (Twilio SMS / Resend email) for real outbound; the workflow doesn't change.
 from pydantic import BaseModel
 from lemma_sdk import FunctionContext, Pod
-
-# Gmail (native LEMMA provider) send-email operation. If the exact id/payload differ
-# in your org, confirm with: lemma connectors operations search workspace-gmail "send email"
-AUTH_CONFIG = "workspace-gmail"
-SEND_OP = "gmail_send_email"
 
 
 class NotifyProviderInput(BaseModel):
@@ -41,18 +39,6 @@ async def notify_provider(ctx: FunctionContext, data: NotifyProviderInput) -> No
     resp = pod.table("provider_responses").get(data.response_id)
     booking = pod.table("bookings").get(resp["booking_id"]) if resp.get("booking_id") else {}
 
-    pros = pod.records.list("professionals", limit=200).to_dict()["items"]
-    pro = next((p for p in pros if (p.get("name") or "").strip().lower()
-                == (resp.get("professional_name") or "").strip().lower()), None)
-    to_email = (pro or {}).get("contact_email")
-
-    if not to_email:
-        pod.records.bulk_create("ticket_events", [{
-            "ticket_id": resp["ticket_id"], "kind": "action_taken", "actor": "agent",
-            "note": f"Provider alert skipped — no contact_email for {resp.get('professional_name')}"[:1900],
-        }])
-        return NotifyProviderResult(sent=False, detail="No provider contact email — SLA will resolve.")
-
     body = build_alert_body(
         customer_name=booking.get("customer_name", "your client"),
         service=booking.get("service", "service"),
@@ -60,21 +46,8 @@ async def notify_provider(ctx: FunctionContext, data: NotifyProviderInput) -> No
         scheduled=str(booking.get("scheduled_at", "")),
         sla_minutes=5,
     )
-    try:
-        pod.connectors.execute(AUTH_CONFIG, SEND_OP, {
-            "recipient_email": to_email,
-            "subject": f"⏳ Client waiting — booking #{booking.get('code', '')}",
-            "body": body,
-        })
-    except Exception as exc:  # never break the resolution over a notification
-        pod.records.bulk_create("ticket_events", [{
-            "ticket_id": resp["ticket_id"], "kind": "action_taken", "actor": "agent",
-            "note": f"Provider alert email failed: {exc}"[:1900],
-        }])
-        return NotifyProviderResult(sent=False, detail=f"Send failed: {exc}")
-
     pod.records.bulk_create("ticket_events", [{
         "ticket_id": resp["ticket_id"], "kind": "action_taken", "actor": "agent",
-        "note": f"Alerted {resp.get('professional_name')} ({to_email}): client waiting",
+        "note": (f"Provider {resp.get('professional_name')} alerted (client waiting): {body}")[:1900],
     }])
-    return NotifyProviderResult(sent=True, detail=f"Alerted {to_email}")
+    return NotifyProviderResult(sent=True, detail=f"Alerted {resp.get('professional_name')} in-app.")

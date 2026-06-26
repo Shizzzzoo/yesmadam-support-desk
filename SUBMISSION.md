@@ -112,7 +112,7 @@ row (with the 🛡 proof-of-service panel), an approval inbox, and an auto-resol
 | **Agent** (POD toolset) | `triage` — read-only judgment returning a rich structured decision the workflow routes on |
 | **Workflows** (AGENT/FUNCTION/DECISION/FORM) | `handle_ticket` (triage → verify → structural+anti-fraud+en-route gate → auto-action / alert-pro / human form), `provider_reply` (routes the pro's reply), `sweep_sla` (cron SLA sweep) |
 | **Schedules** | DATASTORE: new `tickets` → `handle_ticket`, `provider_responses` UPDATE → `provider_reply`; **TIME (cron)**: every minute → `sweep_sla` (the 5-min SLA) |
-| **Connector** | `workspace-gmail` — customer + provider email notifications |
+| **Notifications** | recorded in-pod (`ticket_events`) and surfaced in the app — reliable, no external account; the delivery channel is pluggable (drop in an API-key connector like Twilio/Resend for real SMS/email without changing the workflow) |
 | **App** (single-file HTML, live) | the operator queue — the product humans live in |
 
 ## What's real vs. what's an integration step (honest, and the hiring story)

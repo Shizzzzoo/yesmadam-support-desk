@@ -1,6 +1,6 @@
 {
   "name": "notify_provider",
-  "description": "Emails the assigned professional the 'client is waiting' alert with four response options (running late / reschedule / can't make it / on site). Non-blocking: if no contact email is on file or the send fails, it records that and returns without failing the run — the SLA sweeper takes over.",
+  "description": "Records the 'client is waiting' alert (with the four response options) as an in-pod ticket_events entry. Reliable, no external account; the delivery channel is pluggable (swap in an API-key connector for real SMS/email). The SLA sweeper resolves the customer regardless.",
   "type": "API",
   "code": { "$file": "code.py" },
   "permissions": { "grants": [
@@ -8,11 +8,7 @@
       "permission_ids": ["datastore.table.read", "datastore.record.read"] },
     { "resource_type": "datastore_table", "resource_name": "bookings",
       "permission_ids": ["datastore.table.read", "datastore.record.read"] },
-    { "resource_type": "datastore_table", "resource_name": "professionals",
-      "permission_ids": ["datastore.table.read", "datastore.record.read"] },
     { "resource_type": "datastore_table", "resource_name": "ticket_events",
-      "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] },
-    { "resource_type": "connector", "resource_name": "gmail",
-      "permission_ids": ["connector.use"] }
+      "permission_ids": ["datastore.table.read", "datastore.record.read", "datastore.record.write"] }
   ] }
 }

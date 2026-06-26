@@ -10,7 +10,7 @@
     { "name": "available_slots", "type": "JSON", "description": "List of ISO datetimes currently free" },
     { "name": "area", "type": "TEXT", "max_length": 160, "description": "Service area / locality" }
     ,{ "name": "contact_email", "type": "TEXT", "max_length": 200,
-      "description": "Where the 'client is waiting' alert is sent (Gmail seam; SMS later)" },
+      "description": "Provider contact for the 'client is waiting' alert (delivery channel pluggable — SMS/email when wired)" },
     { "name": "active", "type": "BOOLEAN", "default": true }
   ],
   "config": {}
