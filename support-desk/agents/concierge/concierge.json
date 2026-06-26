@@ -1,0 +1,15 @@
+{
+  "name": "concierge",
+  "description": "Conversational customer-support front door. Answers questions from booking data + policy, asks clarifying questions, and files a clean ticket into the queue for the deterministic engine to resolve. Read-only on data; never moves money itself.",
+  "instruction": { "$file": "instruction.md" },
+  "toolsets": ["POD", "USER_INTERACTION"],
+  "visibility": "POD",
+  "permissions": { "grants": [
+    { "resource_type": "datastore_table", "resource_name": "bookings", "permission_ids": ["datastore.table.read", "datastore.record.read"] },
+    { "resource_type": "datastore_table", "resource_name": "tickets", "permission_ids": ["datastore.table.read", "datastore.record.read"] },
+    { "resource_type": "datastore_table", "resource_name": "professionals", "permission_ids": ["datastore.table.read", "datastore.record.read"] },
+    { "resource_type": "datastore_table", "resource_name": "provider_responses", "permission_ids": ["datastore.table.read", "datastore.record.read"] },
+    { "resource_type": "folder", "resource_name": "/knowledge", "permission_ids": ["folder.read"] },
+    { "resource_type": "function", "resource_name": "file_ticket", "permission_ids": ["function.execute"] }
+  ] }
+}
