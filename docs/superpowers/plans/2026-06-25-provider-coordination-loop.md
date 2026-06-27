@@ -1393,7 +1393,7 @@ Expected: FAIL — `seed must set provider contact_email`.
 
 - [ ] **Step 4: Add `contact_email` to seeded pros + a waiting scenario + a race case**
 
-In `seed/seed.sh`, following its existing record-create idiom: (a) add `contact_email` (use the user's own address `9429.sahl@gmail.com` so the alert actually sends once Gmail is connected) to each professional insert; (b) add a fresh `no_show`/`where_is_pro` ticket on a `scheduled` booking whose pro has a contact email (the waiting scenario); (c) add a booking with `provider_state` `en_route` plus an incoming `cancel_refund` ticket on it (the cross-ticket race case the refund-lock must catch).
+In `seed/seed.sh`, following its existing record-create idiom: (a) add `contact_email` (use the user's own address `demo@yesmadam.example` so the alert actually sends once Gmail is connected) to each professional insert; (b) add a fresh `no_show`/`where_is_pro` ticket on a `scheduled` booking whose pro has a contact email (the waiting scenario); (c) add a booking with `provider_state` `en_route` plus an incoming `cancel_refund` ticket on it (the cross-ticket race case the refund-lock must catch).
 
 - [ ] **Step 5: Create the provider-reply simulator**
 

@@ -163,4 +163,4 @@ export function thread(t) {
   return out;
 }
 
-export const currentUser = "9429.sahl@gmail.com";
+export const currentUser = "demo@yesmadam.example";

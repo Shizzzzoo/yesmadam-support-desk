@@ -37,13 +37,13 @@ mk_booking '{"customer_name":"Rohan Kapoor","service":"massage","professional_na
 
 echo "→ 2/4 professionals"
 mk_pro () { lemma records create professionals --data "$1" >/dev/null && echo "   + $2"; }
-mk_pro '{"name":"Pooja Sharma","services":["haircut"],"available_slots":["2026-06-27T18:00:00+05:30","2026-06-28T16:00:00+05:30"],"area":"Koramangala","active":true,"contact_email":"9429.sahl@gmail.com"}' "Pooja Sharma (haircut)"
-mk_pro '{"name":"Ritu Verma","services":["facial"],"available_slots":["2026-06-27T17:00:00+05:30"],"area":"Indiranagar","active":true,"contact_email":"9429.sahl@gmail.com"}' "Ritu Verma (facial)"
-mk_pro '{"name":"Anjali Rao","services":["massage"],"available_slots":["2026-06-27T20:00:00+05:30"],"area":"HSR Layout","active":true,"contact_email":"9429.sahl@gmail.com"}' "Anjali Rao (massage)"
-mk_pro '{"name":"Neha Gupta","services":["manicure","waxing"],"available_slots":["2026-06-29T11:00:00+05:30"],"area":"Whitefield","active":true,"contact_email":"9429.sahl@gmail.com"}' "Neha Gupta (manicure/waxing)"
-mk_pro '{"name":"Meera Pillai","services":["waxing","facial"],"available_slots":["2026-06-27T21:30:00+05:30"],"area":"BTM Layout","active":true,"contact_email":"9429.sahl@gmail.com"}' "Meera Pillai (waxing/facial) — replacement-capable"
-mk_pro '{"name":"Karan Malhotra","services":["haircut","massage"],"available_slots":["2026-06-27T19:00:00+05:30"],"area":"Koramangala","active":true,"contact_email":"9429.sahl@gmail.com"}' "Karan Malhotra (haircut/massage) — replacement-capable"
-mk_pro '{"name":"Sneha Kulkarni","services":["facial","manicure"],"available_slots":["2026-06-27T21:00:00+05:30"],"area":"BTM Layout","active":true,"contact_email":"9429.sahl@gmail.com"}' "Sneha Kulkarni (facial/manicure) — replacement-capable"
+mk_pro '{"name":"Pooja Sharma","services":["haircut"],"available_slots":["2026-06-27T18:00:00+05:30","2026-06-28T16:00:00+05:30"],"area":"Koramangala","active":true,"contact_email":"demo@yesmadam.example"}' "Pooja Sharma (haircut)"
+mk_pro '{"name":"Ritu Verma","services":["facial"],"available_slots":["2026-06-27T17:00:00+05:30"],"area":"Indiranagar","active":true,"contact_email":"demo@yesmadam.example"}' "Ritu Verma (facial)"
+mk_pro '{"name":"Anjali Rao","services":["massage"],"available_slots":["2026-06-27T20:00:00+05:30"],"area":"HSR Layout","active":true,"contact_email":"demo@yesmadam.example"}' "Anjali Rao (massage)"
+mk_pro '{"name":"Neha Gupta","services":["manicure","waxing"],"available_slots":["2026-06-29T11:00:00+05:30"],"area":"Whitefield","active":true,"contact_email":"demo@yesmadam.example"}' "Neha Gupta (manicure/waxing)"
+mk_pro '{"name":"Meera Pillai","services":["waxing","facial"],"available_slots":["2026-06-27T21:30:00+05:30"],"area":"BTM Layout","active":true,"contact_email":"demo@yesmadam.example"}' "Meera Pillai (waxing/facial) — replacement-capable"
+mk_pro '{"name":"Karan Malhotra","services":["haircut","massage"],"available_slots":["2026-06-27T19:00:00+05:30"],"area":"Koramangala","active":true,"contact_email":"demo@yesmadam.example"}' "Karan Malhotra (haircut/massage) — replacement-capable"
+mk_pro '{"name":"Sneha Kulkarni","services":["facial","manicure"],"available_slots":["2026-06-27T21:00:00+05:30"],"area":"BTM Layout","active":true,"contact_email":"demo@yesmadam.example"}' "Sneha Kulkarni (facial/manicure) — replacement-capable"
 
 echo "→ 3/4 policy document"
 lemma files upload ./support-desk/files/knowledge/support-policy.md /knowledge/support-policy.md \
