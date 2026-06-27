@@ -2,6 +2,7 @@
 
 **Ship to Get Hired — Gappy AI Hackathon · built on the Lemma SDK**
 Live operator app (in-pod): https://support-desk-ops.apps.lemma.work
+Live customer chat (in-pod): https://yesmadam-chat.apps.lemma.work
 Live demo UI (Vercel): https://yesmadam-ops.vercel.app
 
 ---
@@ -102,18 +103,31 @@ Seeded with realistic data, the desk ran itself end-to-end:
 A live **operator app** shows the queue, each ticket's agent decision, the linked booking
 row (with the 🛡 proof-of-service panel), an approval inbox, and an auto-resolution metric.
 
+- **Concierge — the conversational customer front door (verified live).** Beyond the
+  ops-side queue runner, a customer can now self-serve in plain language. A multi-turn
+  `concierge` agent answers from the customer's *actual* booking ("why is my pro late?" →
+  reads check-in/en-route state) and policy, **asks clarifying questions** (refund vs
+  replacement, which booking), and on confirmation **hands off** to the same engine, then
+  reports the real outcome back in chat. It is **answer-only / read-only on bookings** — it
+  never moves money; it just files a ticket, and the engine's gates decide everything
+  downstream. Proven end-to-end on the cloud: a 3-turn chat ("cancel my manicure and refund
+  me" → confirm → "did it go through?") drove a real **cancellation + full ₹699 refund**,
+  with the booking row changed and the result relayed truthfully. A live **customer chat
+  app** hosts it.
+
 ## Lemma SDK utilisation (every primitive, meaningfully)
 
 | Primitive | How we use it |
 |---|---|
 | **Tables** (shared) | `bookings` (the row the agent mutates, incl. the `provider_state` en-route lock), `tickets` (the queue), `ticket_events` (audit), `professionals`, `service_evidence` (proof-of-service), `provider_responses` (the coordination loop) |
 | **Files** (built-in RAG) | `/knowledge/support-policy.md` — the agent retrieves refund/reschedule/no-show + dispute rules |
-| **Functions** (Python) | `apply_triage`, `verify_service` (deterministic anti-fraud), `execute_resolution` (booking mutation + resolve + audit), plus the coordination set: `alert_provider`, `notify_provider`, `read_response`, `commit_en_route`, `offer_reschedule`, `apply_reschedule`, `stand_down`, `provider_stand_notice`, `sweep_provider_sla` |
-| **Agent** (POD toolset) | `triage` — read-only judgment returning a rich structured decision the workflow routes on |
+| **Functions** (Python) | `apply_triage`, `verify_service` (deterministic anti-fraud), `execute_resolution` (booking mutation + resolve + audit); the coordination set: `alert_provider`, `notify_provider`, `read_response`, `commit_en_route`, `offer_reschedule`, `apply_reschedule`, `stand_down`, `provider_stand_notice`, `sweep_provider_sla`; and `file_ticket` (the concierge → queue hand-off) |
+| **Agents** | `triage` — read-only judgment returning a rich structured decision the workflow routes on; `concierge` — multi-turn customer chat (POD + USER_INTERACTION toolsets), read-only on data + policy RAG, asks clarifying questions, files a ticket on confirmation |
 | **Workflows** (AGENT/FUNCTION/DECISION/FORM) | `handle_ticket` (triage → verify → structural+anti-fraud+en-route gate → auto-action / alert-pro / human form), `provider_reply` (routes the pro's reply), `sweep_sla` (cron SLA sweep) |
 | **Schedules** | DATASTORE: new `tickets` → `handle_ticket`, `provider_responses` UPDATE → `provider_reply`; **TIME (cron)**: every minute → `sweep_sla` (the 5-min SLA) |
+| **Conversations** (multi-turn) | the `concierge` chat — context carried across turns, clarifying questions via the user-interaction tool, gated tool-calls routed through grants |
 | **Notifications** | recorded in-pod (`ticket_events`) and surfaced in the app — reliable, no external account; the delivery channel is pluggable (drop in an API-key connector like Twilio/Resend for real SMS/email without changing the workflow) |
-| **App** (single-file HTML, live) | the operator queue — the product humans live in |
+| **Apps** (single-file HTML, live) | `ops-queue` — the operator console; `customer-chat` — the customer-facing concierge chat |
 
 ## What's real vs. what's an integration step (honest, and the hiring story)
 
